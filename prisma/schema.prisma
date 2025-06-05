@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String        @id @default(cuid())
+  email         String        @unique
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  profiles      Profile[]
+  queryLogs     JobQueryLog[]
+}
+
+model Profile {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  name      String
+  location  String
+  role      String
+  stack     String[]
+  links     Json
+  isPublic  Boolean  @default(false)
+}
+
+model SalaryEntry {
+  id         String   @id @default(cuid())
+  country    String
+  role       String
+  stack      String[]
+  contract   String
+  seniority  String
+  amount     Int
+  currency   String
+  createdAt  DateTime @default(now())
+  source     String   @default("user")
+}
+
+model JobQueryLog {
+  id         String   @id @default(cuid())
+  user       User?    @relation(fields: [userId], references: [id])
+  userId     String?
+  country    String
+  role       String
+  stack      String[]
+  timestamp  DateTime @default(now())
+}
+
+model TrendSummary {
+  id         String   @id @default(cuid())
+  summary    String
+  createdAt  DateTime @default(now())
+}
