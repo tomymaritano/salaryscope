@@ -1,115 +1,97 @@
 'use client';
 
-import { useRef, useState } from "react";
+import {  useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import SalaryForm from "../components/SalaryForm";
+import SalaryForm from "@/components/SalaryForm";
 import { SalaryList } from "@/components/SalaryList";
+import { Modal } from "@/components/Modal";
+import { StatsRow } from "@/components/StatsRow";        // Modularizado
+import { AddSalaryButton } from "@/components/AddSalaryButton"; // Modularizado
+import useSalaryStats from "@/hooks/useSalaryStats";
+
+
 
 export default function HomePage() {
   const [showForm, setShowForm] = useState(false);
-  const formRef = useRef<HTMLDivElement>(null);
-
-  // Opcional: cuando el form aparece, scrollea ahí
-  const handleShowForm = () => {
-    setShowForm(true);
-    setTimeout(() => {
-      formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 80);
-  };
-
-  // Handler para cuando el form se envía o cancela
-  const handleFormClose = () => {
-    setShowForm(false);
-  };
+  const [selectedCurrency, setSelectedCurrency] = useState("USD");
+  const { stats, loading, error } = useSalaryStats(selectedCurrency);
 
   return (
-    <main className="relative min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 text-white font-sans antialiased overflow-x-hidden">
-      {/* Hero visual */}
-      <header className="relative z-10 flex flex-col items-center pt-16 pb-8 px-4">
-        {/* Blob animado */}
-        <div className="absolute left-1/2 -translate-x-1/2 -top-12 z-0 pointer-events-none">
-          <svg width="480" height="220" viewBox="0 0 600 400" fill="none">
-            <ellipse cx="300" cy="160" rx="240" ry="90" fill="#14b8a6" fillOpacity="0.12"/>
-          </svg>
-        </div>
-        <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full shadow bg-gray-900/80 backdrop-blur border border-teal-500 mb-4 relative z-10">
-          <svg width={24} height={24} fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#14b8a6" /><path d="M9 12l2 2 4-4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          <span className="text-teal-300 font-bold text-lg tracking-wide">SalaryScope Pro</span>
-        </span>
-        <h1 className="text-3xl md:text-5xl font-extrabold mb-2 tracking-tight leading-tight z-10 drop-shadow">
-          Transparencia salarial IT real &amp; abierta.
-        </h1>
-        <p className="mt-2 text-base md:text-xl text-gray-200 font-light z-10">
-          Descubrí <span className="text-teal-300 font-medium">datos reales</span> de LATAM y Europa, sin cuentas ni emails. 100% anónimo.
-        </p>
-        {/* Stats+CTA */}
-        <div className="mt-7 grid grid-cols-2 sm:grid-cols-3 gap-3 z-10 w-full max-w-2xl">
-          <StatCard label="Salarios cargados">424</StatCard>
-          <StatCard label="Salario promedio">$2810 USD</StatCard>
-          <div className="col-span-2 sm:col-span-1 flex justify-center items-center">
-            {!showForm && (
-              <button
-                className="w-full px-4 py-3 rounded-xl bg-teal-500 hover:bg-teal-600 text-white font-bold shadow-lg text-lg transition focus:outline-none"
-                onClick={handleShowForm}
-              >
-                Agregá tu salario
-              </button>
-            )}
-          </div>
-        </div>
-        <div className="mt-6 flex flex-col gap-2 bg-gray-900/60 border border-teal-500/20 rounded-2xl px-6 py-4 shadow-lg backdrop-blur z-10 max-w-xl">
-          <p className="text-gray-300 text-sm"><b>✔</b> Sin emails ni datos personales. <b>✔</b> Solo se publica lo del formulario. <b>✔</b> Comunidad abierta y verificada.</p>
+    <main className="min-h-screen bg-[#111214] text-white font-sans antialiased">
+      <header className="w-full max-w-6xl mx-auto pt-40 pb-14 px-4 text-left relative">
+        {/* Navbar */}
+        <nav className="absolute top-0 left-0 w-full px-0 flex justify-between items-center h-14 border-b border-white/5 backdrop-blur-sm z-30">
+          <span className="font-black text-lg tracking-tight text-white pl-2">SalaryScope Pro</span>
+          <a href="#opendata" className="text-sm text-gray-400 hover:text-white transition-all font-medium px-4">Ver datos</a>
+        </nav>
+
+        {/* Hero */}
+        <motion.h1
+          className="text-6xl md:text-8xl font-black tracking-tight leading-[1.05] text-white mt-12"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, type: "spring" }}
+        >
+          Transparencia salarial<br /><span className="text-[#D1D5DB]">IT sin bullshit</span>
+        </motion.h1>
+        <motion.p
+          className="mt-7 mb-10 text-lg md:text-2xl text-gray-400 font-normal max-w-xl"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25, duration: 0.6 }}
+        >
+          Sin cuentas, sin mails, sin excusas. Datos reales y anónimos de LATAM y Europa.<br />
+          <span className="text-gray-300 font-semibold tracking-wide">Nunca pedimos tu info personal.</span>
+        </motion.p>
+
+        {/* StatsBar (Stats + CurrencyDropdown) */}
+        <StatsRow
+          stats={stats}
+          loading={loading}
+          error={error}
+          selectedCurrency={selectedCurrency}
+          setSelectedCurrency={setSelectedCurrency}
+        />
+
+        {/* Línea divisoria */}
+        <div className="border-t border-white/10 mt-8 pt-6" />
+
+        {/* Botón brutalista alineado a la izquierda */}
+        <div className="w-full flex justify-start">
+          <AddSalaryButton onClick={() => setShowForm(true)} />
         </div>
       </header>
 
-      {/* Formulario "reveal" solo si showForm */}
+      {/* MODAL SalaryForm */}
       <AnimatePresence>
         {showForm && (
-          <motion.section
-            ref={formRef}
-            className="max-w-2xl mx-auto mt-2 mb-12 px-4 z-20"
-            initial={{ opacity: 0, y: -20, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.99 }}
-            transition={{ duration: 0.32 }}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.21 }}
           >
-            <div className="bg-white/20 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-800 p-6 md:p-8 relative">
-              <button
-                className="absolute top-3 right-4 text-gray-400 hover:text-teal-500 rounded p-2 transition"
-                onClick={handleFormClose}
-                aria-label="Cerrar"
-              >
-                <svg width={22} height={22} fill="none"><path d="M6 6l10 10M6 16L16 6" stroke="currentColor" strokeWidth="2"/></svg>
-              </button>
-              <h2 className="text-lg font-bold text-teal-300 mb-2">Ingresá tu salario</h2>
-              <p className="text-sm text-gray-400 mb-4">
-                Sólo se publica lo del formulario. Sin guardar datos privados.
+            <Modal open={showForm} onClose={() => setShowForm(false)}>
+              <h2 className="text-xl font-black text-gray-100 mb-2 text-left">Ingresá tu salario</h2>
+              <p className="text-sm text-gray-500 mb-4">
+                Solo publicamos lo del formulario. Sin guardar datos privados.
               </p>
               <SalaryForm />
-            </div>
-          </motion.section>
+            </Modal>
+          </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Datos abiertos */}
-      <section className="max-w-6xl mx-auto px-4 z-20">
-        <h2 className="text-xl font-semibold text-teal-300 mb-2">Datos abiertos</h2>
-        <p className="text-sm text-gray-400 mb-6">
-          Tendencias, filtros y visualización moderna de salarios en tiempo real.
+      {/* DATA */}
+      <section id="opendata" className="max-w-6xl mx-auto px-4 z-20">
+        <h2 className="text-2xl font-black text-gray-200 mb-3 mt-16 text-left">Datos abiertos</h2>
+        <p className="text-base text-gray-500 mb-8 text-left">
+          Consultá salarios, filtrá por país, rol o seniority y mirá tendencias reales del mercado.
         </p>
-        <div className="rounded-2xl bg-white/10 dark:bg-gray-900/80 shadow-2xl p-6 md:p-8 mb-16 backdrop-blur">
+        <div className="border border-white/10 p-6 md:p-10 mb-20">
           <SalaryList />
         </div>
       </section>
     </main>
-  );
-}
-
-function StatCard({ label, children }: { label: string, children: React.ReactNode }) {
-  return (
-    <div className="flex flex-col items-center bg-white/20 dark:bg-gray-800/40 rounded-xl px-4 py-5 shadow border border-gray-200 dark:border-gray-800 transition hover:scale-[1.03] hover:shadow-lg min-w-[120px]">
-      <span className="text-2xl font-bold text-teal-400">{children}</span>
-      <span className="text-xs text-gray-400 mt-1">{label}</span>
-    </div>
   );
 }

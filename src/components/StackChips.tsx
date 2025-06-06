@@ -17,14 +17,17 @@ export function StackChips({
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.7, opacity: 0 }}
-            className="flex items-center gap-1 bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-3 py-1 rounded-full text-xs"
+            className="flex items-center gap-1 
+              bg-[#232326] border border-[#28282a] 
+              text-gray-200 px-3 py-1 rounded-lg shadow-sm text-xs
+              select-none"
             tabIndex={0}
             aria-label={`Eliminar ${stack.label}`}
           >
             {stack.label}
             <button
               onClick={() => onRemove(stack.value)}
-              className="ml-1 text-gray-400 hover:text-teal-600 transition"
+              className="ml-1 text-gray-400 hover:text-teal-400 focus:outline-none focus:ring-0 transition"
               aria-label={`Eliminar ${stack.label}`}
               type="button"
             >

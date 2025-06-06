@@ -1,6 +1,4 @@
-// components/SalaryList.tsx
 "use client";
-
 import { useEffect, useState, useMemo } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, PieChart, Pie, Cell, Legend
@@ -69,12 +67,8 @@ export function SalaryList() {
         if (!res.ok) throw new Error("No se pudo obtener los salarios");
         const data = await res.json();
         setSalaries(data);
-      } catch (err: unknown) {
-        if (typeof err === "object" && err && "message" in err) {
-          setError((err as { message?: string }).message ?? "Error desconocido");
-        } else {
-          setError("Error desconocido");
-        }
+      } catch {
+        setError("Error desconocido");
       } finally {
         setLoading(false);
       }
@@ -82,7 +76,7 @@ export function SalaryList() {
     fetchSalaries();
   }, []);
 
-  // --- LOGIC IGUAL ---
+  // --- Logic ---
   const filtered = useMemo(() => {
     return salaries.filter((s) =>
       (!country || s.country.toLowerCase().includes(country.toLowerCase())) &&
@@ -102,8 +96,10 @@ export function SalaryList() {
   const avgAmount = filtered.length > 0 ? totalAmount / filtered.length : 0;
   const topCurrency = filtered.length > 0 ? filtered[0].currency : "USD";
 
-  // Gráficos
+  // Charts
+  // Promedios: SOLO si hay currency seleccionada
   const avgPerRole = useMemo(() => {
+    if (!currency) return [];
     const grouped: { [role: string]: { total: number; count: number; currency: string } } = {};
     filtered.forEach((s) => {
       if (!grouped[s.role]) grouped[s.role] = { total: 0, count: 0, currency: s.currency };
@@ -116,8 +112,10 @@ export function SalaryList() {
       avg: Math.round(stats.total / stats.count),
       currency: stats.currency,
     }));
-  }, [filtered]);
+  }, [filtered, currency]);
+
   const avgPerCountry = useMemo(() => {
+    if (!currency) return [];
     const grouped: { [country: string]: { total: number; count: number; currency: string } } = {};
     filtered.forEach((s) => {
       if (!grouped[s.country]) grouped[s.country] = { total: 0, count: 0, currency: s.currency };
@@ -130,7 +128,9 @@ export function SalaryList() {
       avg: Math.round(stats.total / stats.count),
       currency: stats.currency,
     }));
-  }, [filtered]);
+  }, [filtered, currency]);
+
+  // Distribución: SIEMPRE se muestra
   const seniorityDist = useMemo(() => {
     const grouped: { [sen: string]: number } = {};
     SENIORITIES.forEach(s => grouped[s] = 0);
@@ -149,154 +149,163 @@ export function SalaryList() {
   if (salaries.length === 0) return <p className="text-center text-gray-400">No hay salarios aún.</p>;
 
   return (
-    <section className="mt-10 space-y-10 font-sans">
-      {/* Stats & Filtros */}
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-        <div className="flex-1 space-y-2">
-          <div className="flex items-center gap-2">
-            <span className="inline-block px-3 py-1 rounded-xl bg-teal-50 text-teal-800 font-bold text-sm">{filtered.length}</span>
-            <span className="text-sm text-gray-500">Salarios reportados</span>
+    <section className="mt-10 font-sans space-y-10">
+      {/* Stats + filtros */}
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 border-b border-white/10 pb-3 mb-3">
+        <div className="flex gap-6 items-end">
+          <div className="flex flex-col">
+            <span className="text-3xl font-extrabold text-white">{filtered.length}</span>
+            <span className="text-xs uppercase text-gray-500 font-semibold tracking-wide">Registros</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-400">Promedio:</span>
-            <span className="text-base font-bold text-teal-600">{formatCurrency(avgAmount, topCurrency)}</span>
+          <div className="flex flex-col ml-8">
+            <span className="text-lg font-black text-teal-400">{formatCurrency(avgAmount, topCurrency)}</span>
+            <span className="text-xs uppercase text-gray-500 font-semibold tracking-wide">Promedio</span>
           </div>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 w-full md:w-auto bg-white/80 dark:bg-gray-900/80 p-2 rounded-xl  border border-gray-100 dark:border-gray-800">
-          <select value={country} onChange={e => { setCountry(e.target.value); setPage(1); }} className="px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-xs border border-gray-200 dark:border-gray-700 focus:outline-teal-400">
+        {/* Filtros modernos minimal */}
+        <div className="flex flex-wrap gap-2 w-full md:w-auto mt-4 md:mt-0">
+          <select value={country} onChange={e => { setCountry(e.target.value); setPage(1); }} className="min-w-[120px] text-xs px-3 py-2 bg-[#18181b] border border-white/10 text-gray-200 focus:outline-none focus:border-teal-500 uppercase font-semibold rounded-none-lg">
             <option value="">País</option>
             {uniqueCountries.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
-          <select value={role} onChange={e => { setRole(e.target.value); setPage(1); }} className="px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-xs border border-gray-200 dark:border-gray-700 focus:outline-teal-400">
+          <select value={role} onChange={e => { setRole(e.target.value); setPage(1); }} className="min-w-[120px] text-xs px-3 py-2 bg-[#18181b] border border-white/10 text-gray-200 focus:outline-none focus:border-teal-500 uppercase font-semibold rounded-none-lg">
             <option value="">Rol</option>
             {uniqueRoles.map(r => <option key={r} value={r}>{r}</option>)}
           </select>
-          <select value={seniority} onChange={e => { setSeniority(e.target.value); setPage(1); }} className="px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-xs border border-gray-200 dark:border-gray-700 focus:outline-teal-400">
+          <select value={seniority} onChange={e => { setSeniority(e.target.value); setPage(1); }} className="min-w-[120px] text-xs px-3 py-2 bg-[#18181b] border border-white/10 text-gray-200 focus:outline-none focus:border-teal-500 uppercase font-semibold rounded-none-lg">
             <option value="">Seniority</option>
             {SENIORITIES.map(s => <option key={s} value={s}>{s}</option>)}
           </select>
-          <select value={currency} onChange={e => { setCurrency(e.target.value); setPage(1); }} className="px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-xs border border-gray-200 dark:border-gray-700 focus:outline-teal-400">
+          <select value={currency} onChange={e => { setCurrency(e.target.value); setPage(1); }} className="min-w-[100px] text-xs px-3 py-2 bg-[#18181b] border border-white/10 text-gray-200 focus:outline-none focus:border-teal-500 uppercase font-semibold rounded-none-lg">
             <option value="">Moneda</option>
             {uniqueCurrencies.map(cur => <option key={cur} value={cur}>{cur.toUpperCase()}</option>)}
           </select>
           <button
             onClick={handleResetFilters}
-            className="col-span-2 sm:col-span-1 px-3 py-1 rounded bg-gray-200 dark:bg-gray-800 hover:bg-teal-100 dark:hover:bg-teal-900 text-xs font-semibold"
+            className="px-3 py-2 text-xs uppercase font-bold bg-transparent border border-white/10 text-gray-400 hover:text-teal-400 hover:border-teal-400 rounded-none-lg transition"
           >
             Limpiar
           </button>
         </div>
       </div>
 
-      {/* Tabla */}
-      <div className="overflow-x-auto rounded-xl bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-800 -lg transition">
+      {/* Tabla salarios */}
+      <div className="overflow-x-auto border-b border-white/10 rounded-none-2xl">
         <table className="min-w-full text-[15px] text-left font-normal">
-          <thead className="bg-gray-50 dark:bg-gray-900/80 text-gray-600 dark:text-gray-300 uppercase text-xs sticky top-0 z-10">
+          <thead className="bg-transparent text-gray-400 uppercase text-xs border-b border-white/10 sticky top-0 z-10">
             <tr>
-              <th className="px-4 py-3 font-bold">País</th>
-              <th className="px-4 py-3 font-bold">Rol</th>
-              <th className="px-4 py-3 font-bold hidden md:table-cell">Stack</th>
-              <th className="px-4 py-3 font-bold">Contrato</th>
-              <th className="px-4 py-3 font-bold">Seniority</th>
-              <th className="px-4 py-3 font-bold">Salario</th>
-              <th className="px-4 py-3 font-bold">Fecha</th>
+              <th className="px-3 py-2 font-bold">País</th>
+              <th className="px-3 py-2 font-bold">Rol</th>
+              <th className="px-3 py-2 font-bold hidden md:table-cell">Stack</th>
+              <th className="px-3 py-2 font-bold">Contrato</th>
+              <th className="px-3 py-2 font-bold">Seniority</th>
+              <th className="px-3 py-2 font-bold">Salario</th>
+              <th className="px-3 py-2 font-bold">Fecha</th>
             </tr>
           </thead>
           <tbody>
             {paged.map((s, idx) => (
               <tr
                 key={s.id}
-                className={`transition ${idx % 2 === 0 ? "bg-white dark:bg-gray-900/70" : "bg-gray-50 dark:bg-gray-800/60"} hover:bg-teal-50 dark:hover:bg-teal-900/40`}
+                className={`transition border-b border-white/5
+                  ${idx % 2 === 0 ? "bg-[#18181b]" : "bg-[#232326]"}
+                  hover:bg-[#111214]`}
               >
-                <td className="px-4 py-3">{s.country}</td>
-                <td className="px-4 py-3">{s.role}</td>
-                <td className="px-4 py-3 hidden md:table-cell">
-                  <span className="inline-block max-w-[160px] truncate text-gray-400">{s.stack.join(", ")}</span>
+                <td className="px-3 py-2">{s.country}</td>
+                <td className="px-3 py-2">{s.role}</td>
+                <td className="px-3 py-2 hidden md:table-cell">
+                  <span className="inline-block max-w-[160px] truncate text-gray-500">{s.stack.join(", ")}</span>
                 </td>
-                <td className="px-4 py-3">{s.contract}</td>
-                <td className="px-4 py-3">{s.seniority}</td>
-                <td className="px-4 py-3 font-semibold text-teal-600">{formatCurrency(s.amount, s.currency)}</td>
-                <td className="px-4 py-3 text-xs text-gray-400">{new Date(s.createdAt).toLocaleDateString(undefined, { year: "2-digit", month: "short", day: "numeric" })}</td>
+                <td className="px-3 py-2">{s.contract}</td>
+                <td className="px-3 py-2">{s.seniority}</td>
+                <td className="px-3 py-2 font-semibold text-teal-400">{formatCurrency(s.amount, s.currency)}</td>
+                <td className="px-3 py-2 text-xs text-gray-500">{new Date(s.createdAt).toLocaleDateString(undefined, { year: "2-digit", month: "short", day: "numeric" })}</td>
               </tr>
             ))}
           </tbody>
         </table>
         {/* Paginación */}
         {pageCount > 1 && (
-          <div className="flex justify-center items-center gap-2 py-4 bg-gray-50 dark:bg-gray-900/50 rounded-b-xl">
-            <button disabled={page === 1} onClick={() => setPage(p => p - 1)} className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-800 hover:bg-teal-100 dark:hover:bg-teal-900 disabled:opacity-50 text-xs font-semibold">Anterior</button>
+          <div className="flex justify-center items-center gap-2 py-4 bg-transparent">
+            <button disabled={page === 1} onClick={() => setPage(p => p - 1)} className="px-3 py-1 rounded-none-lg bg-[#18181b] text-gray-400 border border-white/10 hover:text-white hover:border-teal-400 disabled:opacity-50 text-xs font-semibold transition">Anterior</button>
             <span className="text-xs px-2">{page}/{pageCount}</span>
-            <button disabled={page === pageCount} onClick={() => setPage(p => p + 1)} className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-800 hover:bg-teal-100 dark:hover:bg-teal-900 disabled:opacity-50 text-xs font-semibold">Siguiente</button>
+            <button disabled={page === pageCount} onClick={() => setPage(p => p + 1)} className="px-3 py-1 rounded-none-lg bg-[#18181b] text-gray-400 border border-white/10 hover:text-white hover:border-teal-400 disabled:opacity-50 text-xs font-semibold transition">Siguiente</button>
           </div>
         )}
       </div>
 
-      {/* Tabs para gráficos */}
-      <div className="w-full flex flex-col gap-4">
-        <div className="flex gap-1 mb-2 border-b border-gray-100 dark:border-gray-700">
+      {/* Tabs para los gráficos */}
+      <div className="w-full flex flex-col gap-3 mt-8">
+        <div className="flex gap-1 border-b border-white/10">
           {chartTabs.map(tab => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              className={`px-4 py-2 rounded-t-lg font-medium transition-all
+              className={`px-6 py-3 font-bold border-b-2
                 ${activeTab === tab.key
-                  ? "bg-white dark:bg-gray-900 border-x border-t border-gray-100 dark:border-gray-700 -mb-px text-teal-700 dark:text-teal-400 "
-                  : "bg-transparent text-gray-500 hover:text-teal-600"}`}
-              style={{ fontSize: 15 }}
+                  ? "border-teal-400 text-white"
+                  : "border-transparent text-gray-500 hover:text-teal-400"}`}
+              style={{ fontSize: 15, background: "none" }}
             >
               {tab.label}
             </button>
           ))}
         </div>
-
-        <div className="bg-white/90 dark:bg-gray-900/90 rounded-xl border border-gray-100 dark:border-gray-800  p-4 min-h-[350px] flex flex-col justify-between">
-          {activeTab === "role" && (
+        <div className="bg-[#18181b] border border-white/10 rounded-none-2xl p-6 min-h-[350px] flex flex-col justify-between">
+          {/* SOLO muestra los gráficos de promedio si hay currency */}
+          {(activeTab === "role" || activeTab === "country") && !currency && (
+            <div className="flex flex-1 items-center justify-center text-center text-gray-500 font-bold text-lg">
+              Seleccioná una moneda para ver los promedios salariales.
+            </div>
+          )}
+          {activeTab === "role" && currency && (
             <>
-              <h3 className="font-semibold mb-2 text-gray-700 dark:text-gray-200 text-center">Promedio salarial por Rol</h3>
+              <h3 className="font-bold mb-2 text-gray-200 text-center uppercase text-sm tracking-widest">Promedio salarial por Rol</h3>
               <ResponsiveContainer width="100%" height={260}>
                 <BarChart data={avgPerRole} margin={{ top: 10, right: 10, left: 0, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="2 4" />
+                  <CartesianGrid strokeDasharray="2 4" stroke="#232326" />
                   <XAxis dataKey="role" fontSize={12} tickLine={false} axisLine={false} />
                   <YAxis fontSize={12} tickLine={false} axisLine={false} />
                   <Tooltip
-                    wrapperClassName="!rounded-xl !"
-                    contentStyle={{ borderRadius: 12, fontSize: 13 }}
+                    wrapperClassName="!rounded-none !shadow-none"
+                    contentStyle={{ borderRadius: 0, fontSize: 13, background: "#232326", color: "#fff", border: "none" }}
                     formatter={(
                       value: string | number,
                       _name: string,
                       item: { payload?: { currency: string } }
                     ) => formatCurrency(Number(value), item?.payload?.currency ?? 'USD')}
                   />
-                  <Bar dataKey="avg" fill="#14b8a6" radius={[8, 8, 0, 0]} />
+                  <Bar dataKey="avg" fill="#14b8a6" radius={[2, 2, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </>
           )}
-          {activeTab === "country" && (
+          {activeTab === "country" && currency && (
             <>
-              <h3 className="font-semibold mb-2 text-gray-700 dark:text-gray-200 text-center">Promedio salarial por País</h3>
+              <h3 className="font-bold mb-2 text-gray-200 text-center uppercase text-sm tracking-widest">Promedio salarial por País</h3>
               <ResponsiveContainer width="100%" height={260}>
                 <BarChart data={avgPerCountry} margin={{ top: 10, right: 10, left: 0, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="2 4" />
+                  <CartesianGrid strokeDasharray="2 4" stroke="#232326" />
                   <XAxis dataKey="country" fontSize={12} tickLine={false} axisLine={false} />
                   <YAxis fontSize={12} tickLine={false} axisLine={false} />
                   <Tooltip
-                    wrapperClassName="!rounded-xl !"
-                    contentStyle={{ borderRadius: 12, fontSize: 13 }}
+                    wrapperClassName="!rounded-none !shadow-none"
+                    contentStyle={{ borderRadius: 0, fontSize: 13, background: "#232326", color: "#fff", border: "none" }}
                     formatter={(
                       value: string | number,
                       _name: string,
                       item: { payload?: { currency: string } }
                     ) => formatCurrency(Number(value), item?.payload?.currency ?? 'USD')}
                   />
-                  <Bar dataKey="avg" fill="#60a5fa" radius={[8, 8, 0, 0]} />
+                  <Bar dataKey="avg" fill="#60a5fa" radius={[2, 2, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </>
           )}
+          {/* El gráfico de seniorities se muestra SIEMPRE */}
           {activeTab === "seniority" && (
             <>
-              <h3 className="font-semibold mb-2 text-gray-700 dark:text-gray-200 text-center">Distribución de seniorities</h3>
+              <h3 className="font-bold mb-2 text-gray-200 text-center uppercase text-sm tracking-widest">Distribución de seniorities</h3>
               <ResponsiveContainer width="100%" height={260}>
                 <PieChart>
                   <Pie data={seniorityDist} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={90} label>
@@ -304,8 +313,11 @@ export function SalaryList() {
                       <Cell key={`cell-${idx}`} fill={COLORS[idx % COLORS.length]} />
                     ))}
                   </Pie>
-                  <Legend iconType="circle" wrapperStyle={{ fontSize: 13 }} />
-                  <Tooltip />
+                  <Legend iconType="circle" wrapperStyle={{ fontSize: 13, color: "#fff" }} />
+                  <Tooltip
+                    wrapperClassName="!rounded-none !shadow-none"
+                    contentStyle={{ borderRadius: 0, fontSize: 13, background: "#232326", color: "#fff", border: "none" }}
+                  />
                 </PieChart>
               </ResponsiveContainer>
             </>
@@ -314,4 +326,4 @@ export function SalaryList() {
       </div>
     </section>
   );
-}
+} 
