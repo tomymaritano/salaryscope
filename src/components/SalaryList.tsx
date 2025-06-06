@@ -54,6 +54,14 @@ export function SalaryList() {
   const [activeTab, setActiveTab] = useState("role");
   const pageSize = 10;
 
+  const handleResetFilters = () => {
+    setCountry("");
+    setRole("");
+    setSeniority("");
+    setCurrency("");
+    setPage(1);
+  };
+
   useEffect(() => {
     async function fetchSalaries() {
       try {
@@ -154,7 +162,7 @@ export function SalaryList() {
             <span className="text-base font-bold text-teal-600">{formatCurrency(avgAmount, topCurrency)}</span>
           </div>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 w-full md:w-auto bg-white/80 dark:bg-gray-900/80 p-2 rounded-xl  border border-gray-100 dark:border-gray-800">
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 w-full md:w-auto bg-white/80 dark:bg-gray-900/80 p-2 rounded-xl  border border-gray-100 dark:border-gray-800">
           <select value={country} onChange={e => { setCountry(e.target.value); setPage(1); }} className="px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-xs border border-gray-200 dark:border-gray-700 focus:outline-teal-400">
             <option value="">País</option>
             {uniqueCountries.map(c => <option key={c} value={c}>{c}</option>)}
@@ -171,6 +179,12 @@ export function SalaryList() {
             <option value="">Moneda</option>
             {uniqueCurrencies.map(cur => <option key={cur} value={cur}>{cur.toUpperCase()}</option>)}
           </select>
+          <button
+            onClick={handleResetFilters}
+            className="col-span-2 sm:col-span-1 px-3 py-1 rounded bg-gray-200 dark:bg-gray-800 hover:bg-teal-100 dark:hover:bg-teal-900 text-xs font-semibold"
+          >
+            Limpiar
+          </button>
         </div>
       </div>
 
