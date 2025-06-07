@@ -25,8 +25,8 @@ export function StatsRow({
       <div className="flex gap-8 mt-2 md:mt-0">
         {loading ? (
           <>
-            <div className="min-w-[130px] animate-pulse h-12 bg-white/5 rounded" />
-            <div className="min-w-[130px] animate-pulse h-12 bg-white/5 rounded" />
+            <div className="min-w-[130px] animate-pulse h-12 bg-white/5 rounded-none" />
+            <div className="min-w-[130px] animate-pulse h-12 bg-white/5 rounded-none" />
           </>
         ) : error ? (
           <span className="text-red-400 text-sm">{error}</span>

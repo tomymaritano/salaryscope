@@ -19,7 +19,7 @@ export function StackChips({
             exit={{ scale: 0.7, opacity: 0 }}
             className="flex items-center gap-1 
               bg-[#232326] border border-[#28282a] 
-              text-gray-200 px-3 py-1 rounded-lg shadow-sm text-xs
+              text-gray-200 px-3 py-1 rounded-none-lg shadow-sm text-xs
               select-none"
             tabIndex={0}
             aria-label={`Eliminar ${stack.label}`}

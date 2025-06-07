@@ -1,13 +1,14 @@
 'use client';
 
-import {  useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SalaryForm from "@/components/SalaryForm";
-import { SalaryList } from "@/components/SalaryList";
+import { SalaryList } from "@/components/Salary/SalaryList";
 import { Modal } from "@/components/Modal";
 import { StatsRow } from "@/components/StatsRow";        // Modularizado
 import { AddSalaryButton } from "@/components/AddSalaryButton"; // Modularizado
 import useSalaryStats from "@/hooks/useSalaryStats";
+import Squares from "@/components/Squares/Squares";
 
 
 
@@ -17,11 +18,20 @@ export default function HomePage() {
   const { stats, loading, error } = useSalaryStats(selectedCurrency);
 
   return (
-    <main className="min-h-screen bg-[#111214] text-white font-sans antialiased">
-      <header className="w-full max-w-6xl mx-auto pt-40 pb-14 px-4 text-left relative">
+    <main className="min-h-screen text-white font-sans antialiased pb-8">
+      <div className="fixed inset-0 w-full min-h-full z-[-1] pointer-events-none">
+        <Squares
+          speed={0.5}
+          squareSize={40}
+          direction='right' // up, down, left, right, diagonal
+          borderColor='#fff999'
+          hoverFillColor='#222'
+        />
+      </div>
+      <header className="w-full max-w-6xl mx-auto pt-40 pb-3 px-4 text-left relative">
         {/* Navbar */}
-        <nav className="absolute top-0 left-0 w-full px-0 flex justify-between items-center h-14 border-b border-white/5 backdrop-blur-sm z-30">
-          <span className="font-black text-lg tracking-tight text-white pl-2">SalaryScope Pro</span>
+        <nav className="absolute top-10 left-0 w-full px-0 flex justify-between items-center h-14 border-b border-white/5 backdrop-blur-sm z-30">
+          <span className="font-black text-lg tracking-tight text-white pl-2">HackLab SalaryBoard</span>
           <a href="#opendata" className="text-sm text-gray-400 hover:text-white transition-all font-medium px-4">Ver datos</a>
         </nav>
 
@@ -83,12 +93,12 @@ export default function HomePage() {
       </AnimatePresence>
 
       {/* DATA */}
-      <section id="opendata" className="max-w-6xl mx-auto px-4 z-20">
+      <section id="opendata" className="max-w-6xl mx-auto px-4">
         <h2 className="text-2xl font-black text-gray-200 mb-3 mt-16 text-left">Datos abiertos</h2>
         <p className="text-base text-gray-500 mb-8 text-left">
           Consultá salarios, filtrá por país, rol o seniority y mirá tendencias reales del mercado.
         </p>
-        <div className="border border-white/10 p-6 md:p-10 mb-20">
+        <div className="border border-white/10 p-6 md:p-10">
           <SalaryList />
         </div>
       </section>

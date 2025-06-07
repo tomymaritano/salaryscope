@@ -2,6 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { roles, stacks } from '@/lib/data/rolesAndStacks';
 import { countries } from '@/lib/data/countries';
 import { currencies } from '@/lib/data/currencies';
@@ -69,7 +70,6 @@ export default function SalaryForm() {
   }, [stackInput, selectedStacks]);
 
   const handleStackInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // Si hay sugerencias, navega con flechas y Enter
     if (stackSuggestions.length > 0) {
       if (e.key === 'ArrowDown') {
         e.preventDefault();
@@ -85,7 +85,6 @@ export default function SalaryForm() {
           setStackInput('');
         }
       } else if (e.key === 'Tab') {
-        // autocompleta el primero
         if (stackSuggestions[stackActiveIdx]) {
           addStack(stackSuggestions[stackActiveIdx].value);
           setStackInput('');
@@ -96,7 +95,6 @@ export default function SalaryForm() {
         setStackInput('');
       }
     } else if (e.key === 'Enter' && stackInput.trim().length > 0) {
-      // Permite crear una tecnología si no existe (como tag nueva)
       const normalized = normalizeTag(stackInput);
       const exists = stackOptions.find(
         s => s.label.toLowerCase() === normalized.toLowerCase()
@@ -112,7 +110,6 @@ export default function SalaryForm() {
   };
 
   function addStack(val: string) {
-    // No repetir, ni strings vacíos
     if (!val.trim() || selectedStacks.includes(val)) return;
     setSelectedStacks(prev => [...prev, val]);
   }
@@ -164,7 +161,6 @@ export default function SalaryForm() {
 
   // --- Submit ---
   const onSubmit = async (data: FormData) => {
-    // stacks pueden ser string[] (si el user agregó custom tag)
     const cleanStacks = selectedStacks
       .map(tag => {
         const match = stackOptions.find(s => s.value === tag);
@@ -194,14 +190,19 @@ export default function SalaryForm() {
 
   // --- Main form ---
   return (
-    <form
+    <motion.form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full max-w-2xl mx-auto space-y-8 rounded-xl p-8 backdrop-blur-xl bg-[#19191c]/80 border border-[#232326] transition"
+      className="w-full max-w-2xl mx-auto space-y-8 rounded-none p-8 backdrop-blur-xl bg-[#19191c]/80 border border-[#232326] transition"
       autoComplete="off"
       noValidate
       aria-labelledby="salary-form-title"
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25 }}
     >
-      <FormFeedback status={status} />
+      <AnimatePresence>
+        {status && <FormFeedback status={status} key={status} />}
+      </AnimatePresence>
       <h2 id="salary-form-title" className="sr-only">Formulario de salario</h2>
 
       {/* País */}
@@ -239,59 +240,71 @@ export default function SalaryForm() {
             id="role"
             placeholder="Ej: Frontend Developer"
           />
-          {showRoleSuggestions && roleSuggestions.length > 0 && (
-            <ul
-              id="role-suggestions"
-              className="absolute z-30 left-0 right-0 bg-[#232326] border border-[#303033] mt-2 rounded-xl shadow-xl max-h-48 overflow-auto transition-all"
-              role="listbox"
-            >
-              {roleSuggestions.map((role, idx) => (
-                <li
-                  key={role}
-                  id={`role-sug-${idx}`}
-                  className={`px-4 py-2 cursor-pointer transition-all hover:bg-[#18181b] rounded ${
-                    roleActiveIdx === idx ? 'bg-[#262628]' : ''
-                  }`}
-                  onMouseDown={() => {
-                    setRoleInput(role);
-                    setValue('role', role);
-                    setShowRoleSuggestions(false);
-                    setRoleActiveIdx(-1);
-                  }}
-                  role="option"
-                  aria-selected={roleActiveIdx === idx}
-                  tabIndex={-1}
-                >
-                  {role}
-                </li>
-              ))}
-            </ul>
-          )}
+          <AnimatePresence>
+            {showRoleSuggestions && roleSuggestions.length > 0 && (
+              <motion.ul
+                id="role-suggestions"
+                className="absolute z-30 left-0 right-0 bg-[#232326] border border-[#303033] mt-2 rounded-none shadow-xl max-h-48 overflow-auto transition-all"
+                role="listbox"
+                initial={{ opacity: 0, y: -12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 12 }}
+                transition={{ duration: 0.18 }}
+              >
+                {roleSuggestions.map((role, idx) => (
+                  <li
+                    key={role}
+                    id={`role-sug-${idx}`}
+                    className={`px-4 py-2 cursor-pointer transition-all hover:bg-[#18181b] rounded ${
+                      roleActiveIdx === idx ? 'bg-[#262628]' : ''
+                    }`}
+                    onMouseDown={() => {
+                      setRoleInput(role);
+                      setValue('role', role);
+                      setShowRoleSuggestions(false);
+                      setRoleActiveIdx(-1);
+                    }}
+                    role="option"
+                    aria-selected={roleActiveIdx === idx}
+                    tabIndex={-1}
+                  >
+                    {role}
+                  </li>
+                ))}
+              </motion.ul>
+            )}
+          </AnimatePresence>
         </div>
       </Field>
 
       {/* Stack tecnológico - autocomplete tags */}
       <Field label="Stack tecnológico">
         <div className="flex flex-wrap gap-2 mb-2">
-          {selectedStacks.map(stackVal => {
-            const stackObj = stackOptions.find(s => s.value === stackVal);
-            return (
-              <span
-                key={stackVal}
-                className="flex items-center gap-1 bg-[#18181b] text-teal-200 px-3 py-1 rounded-full text-xs border border-teal-800"
-              >
-                {stackObj ? stackObj.label : stackVal}
-                <button
-                  type="button"
-                  className="ml-1 text-gray-500 hover:text-red-400 transition"
-                  onClick={() => removeStack(stackVal)}
-                  aria-label={`Eliminar ${stackObj ? stackObj.label : stackVal}`}
+          <AnimatePresence>
+            {selectedStacks.map(stackVal => {
+              const stackObj = stackOptions.find(s => s.value === stackVal);
+              return (
+                <motion.span
+                  key={stackVal}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.18 }}
+                  className="flex items-center gap-1 bg-[#18181b] text-teal-200 px-3 py-1 rounded-full text-xs border border-teal-800"
                 >
-                  ×
-                </button>
-              </span>
-            );
-          })}
+                  {stackObj ? stackObj.label : stackVal}
+                  <button
+                    type="button"
+                    className="ml-1 text-gray-500 hover:text-red-400 transition"
+                    onClick={() => removeStack(stackVal)}
+                    aria-label={`Eliminar ${stackObj ? stackObj.label : stackVal}`}
+                  >
+                    ×
+                  </button>
+                </motion.span>
+              );
+            })}
+          </AnimatePresence>
         </div>
         <div className="relative w-full">
           <input
@@ -307,32 +320,38 @@ export default function SalaryForm() {
             aria-controls="stack-suggestions"
             aria-activedescendant={stackActiveIdx >= 0 ? `stack-sug-${stackActiveIdx}` : undefined}
           />
-          {stackInput && stackSuggestions.length > 0 && (
-            <ul
-              id="stack-suggestions"
-              className="absolute left-0 right-0 mt-2 bg-[#232326] border border-[#303033] rounded-xl shadow-xl z-10 max-h-48 overflow-auto"
-              role="listbox"
-            >
-              {stackSuggestions.map((s, idx) => (
-                <li
-                  key={s.value}
-                  id={`stack-sug-${idx}`}
-                  className={`px-4 py-2 cursor-pointer hover:bg-[#18181b] text-teal-200 rounded ${
-                    stackActiveIdx === idx ? 'bg-[#262628]' : ''
-                  }`}
-                  onMouseDown={() => {
-                    addStack(s.value);
-                    setStackInput('');
-                  }}
-                  role="option"
-                  aria-selected={stackActiveIdx === idx}
-                  tabIndex={-1}
-                >
-                  {s.label}
-                </li>
-              ))}
-            </ul>
-          )}
+          <AnimatePresence>
+            {stackInput && stackSuggestions.length > 0 && (
+              <motion.ul
+                id="stack-suggestions"
+                className="absolute left-0 right-0 mt-2 bg-[#232326] border border-[#303033] rounded-none shadow-xl z-10 max-h-48 overflow-auto"
+                role="listbox"
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                transition={{ duration: 0.15 }}
+              >
+                {stackSuggestions.map((s, idx) => (
+                  <li
+                    key={s.value}
+                    id={`stack-sug-${idx}`}
+                    className={`px-4 py-2 cursor-pointer hover:bg-[#18181b] text-teal-200 rounded ${
+                      stackActiveIdx === idx ? 'bg-[#262628]' : ''
+                    }`}
+                    onMouseDown={() => {
+                      addStack(s.value);
+                      setStackInput('');
+                    }}
+                    role="option"
+                    aria-selected={stackActiveIdx === idx}
+                    tabIndex={-1}
+                  >
+                    {s.label}
+                  </li>
+                ))}
+              </motion.ul>
+            )}
+          </AnimatePresence>
         </div>
         <span className="text-xs text-gray-500 mt-1 block">Podés escribir una tecnología que no esté en la lista.</span>
       </Field>
@@ -397,11 +416,18 @@ export default function SalaryForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full py-3 px-4 bg-[#232326] hover:bg-[#18181b] text-teal-200 font-bold rounded-xl text-base shadow focus:ring-2 focus:ring-teal-400 focus:outline-none disabled:opacity-60 transition"
+        className="w-full py-3 px-4 bg-[#232326] hover:bg-[#18181b] text-teal-200 font-bold rounded-none text-base shadow focus:ring-2 focus:ring-teal-400 focus:outline-none disabled:opacity-60 transition"
       >
-        {isSubmitting ? 'Enviando...' : 'Enviar salario'}
+        {isSubmitting ? (
+          <span className="flex justify-center items-center gap-2">
+            <svg className="animate-spin h-4 w-4 text-teal-400" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" stroke="#14b8a6" strokeWidth="3" fill="none" strokeLinecap="round"/>
+            </svg>
+            Enviando...
+          </span>
+        ) : 'Enviar salario'}
       </button>
-    </form>
+    </motion.form>
   );
 }
 
@@ -409,8 +435,12 @@ export default function SalaryForm() {
 function FormFeedback({ status }: { status: string }) {
   if (!status) return null;
   return (
-    <div
-      className={`mb-2 text-center rounded px-4 py-2 font-semibold shadow animate-in fade-in transition-all border
+    <motion.div
+      initial={{ opacity: 0, scale: 0.92 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.92 }}
+      transition={{ duration: 0.18 }}
+      className={`mb-2 text-center rounded-none px-4 py-2 font-semibold shadow animate-in fade-in transition-all border
         ${status === "success"
           ? "bg-[#1d2d25] border-teal-700 text-teal-300"
           : "bg-[#2d191a] border-red-700 text-red-400"}`}
@@ -419,10 +449,18 @@ function FormFeedback({ status }: { status: string }) {
         ? <>✅ Salario enviado. ¡Gracias por tu aporte!</>
         : <>❌ Hubo un error al enviar. Revisá los datos.</>
       }
-    </div>
+    </motion.div>
   );
 }
 
+// --- Field pro, tipado ---
+interface FieldProps {
+  label: string;
+  htmlFor?: string;
+  error?: unknown;
+  className?: string;
+  children: React.ReactNode;
+}
 // --- Field pro, tipado ---
 interface FieldProps {
   label: string;
@@ -451,11 +489,3 @@ function Field({ label, htmlFor, error, className = "", children }: FieldProps) 
     </div>
   );
 }
-
-/*
-Agregá esto en tu TailwindCSS:
-
-.field-input {
-  @apply w-full bg-[#18181b]/90 border border-[#232326] rounded-xl px-4 py-2 text-gray-100 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-400 shadow-sm backdrop-blur transition;
-}
-*/
