@@ -3,6 +3,31 @@ import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
 
+
+export const metadata = {
+  title: 'SalaryBoard - Free Data',
+  description: 'Transparencia salarial IT. Sin humo. Sin drama. Consulta y compartí salarios tech de LATAM y Europa de forma 100% anónima.',
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
+  openGraph: {
+    title: 'HackLab SalaryBoard',
+    description: 'Transparencia salarial IT. Sin humo. Sin drama.',
+    url: 'https://salary.hacklab.dog',
+    siteName: 'SalaryBoard - hacklab.dpg',
+    images: [
+      {
+        url: '/og-image.png', // (Coloca tu imagen OG en /public)
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'es_AR',
+    type: 'website',
+  },
+};
+
 const spaceGrotesk = Space_Grotesk({
   variable: '--font-space-grotesk',
   subsets: ['latin'],
@@ -15,10 +40,6 @@ const ibmMono = IBM_Plex_Mono({
   weight: ['400'], // or include other weights as needed
 });
 
-export const metadata = {
-  title: 'Hacklab Salary Board',
-  description: 'Transparencia salarial IT sin bullshit',
-};
 
 export default function RootLayout({
   children,
