@@ -31,11 +31,33 @@ body {
 }
 
 .input {
-  @apply w-full px-4 py-2  bg-gray-950 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500;
+  @apply w-full px-4 py-2 bg-gray-950 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500;
 }
 
+/* globals.css o donde definas tus estilos base */
 .field-input {
-  @apply w-full bg-white/60 dark:bg-gray-950/70 border border-gray-200 dark:border-gray-700  px-4 py-2 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-400 shadow-sm backdrop-blur transition;
+  @apply w-full px-4 py-3 rounded-none bg-black/20 backdrop-blur-md border border-teal-400/20 text-teal-200 font-semibold text-sm shadow-sm focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-600/40 transition-all duration-150 placeholder:text-gray-500 hover:bg-black/30;
+}
+
+@media (max-width: 640px) {
+  .field-input {
+    @apply py-4 text-base;
+  }
+}
+
+.field-input:focus {
+  box-shadow: 0 0 0 2px #20e6c333, 0 1px 8px 0 #14b8a62a;
+}
+.field-input:invalid {
+  border-color: #f87171;
+  box-shadow: 0 0 0 2px #f87171cc;
+}
+
+.btn-submit {
+  @apply w-full py-3 px-4 bg-gradient-to-r from-black/80 to-teal-800/10
+         hover:bg-teal-800/10 text-teal-200 font-bold rounded-none text-base shadow
+         border border-teal-400/30 transition-all focus:ring-2 focus:ring-teal-400
+         focus:outline-none disabled:opacity-60;
 }
 
 /* Para Chrome, Edge, Safari */
@@ -43,18 +65,49 @@ body {
   width: 8px;
   background: transparent;
 }
+
 .scrollbar-glass::-webkit-scrollbar-thumb {
   background: linear-gradient(120deg, #14b8a6bb, #60a5fa88);
   border-radius: 99px;
   border: 2px solid #18181b;
   box-shadow: 0 0 10px #14b8a644;
 }
+
 .scrollbar-glass::-webkit-scrollbar-track {
   background: transparent;
   border-radius: 99px;
 }
+
 /* Para Firefox */
 .scrollbar-glass {
   scrollbar-width: thin;
   scrollbar-color: gray #18181b;
+}
+
+@keyframes currency-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+.animate-currency-shimmer {
+  animation: currency-shimmer 2.6s linear infinite;
+}
+
+@keyframes salary-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(280%);
+  }
+}
+
+.animate-salary-shimmer {
+  animation: salary-shimmer 3s linear infinite;
 }

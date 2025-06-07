@@ -1,5 +1,4 @@
-// components/CurrencyDropdown.tsx
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { currencies } from "@/lib/data/currencies";
 
@@ -11,26 +10,49 @@ export function CurrencyDropdown({
   onChange: (val: string) => void;
 }) {
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Cierra el dropdown si clickeás fuera
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+    if (open) {
+      window.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => window.removeEventListener("mousedown", handleClickOutside);
+  }, [open]);
 
   return (
-    <div className="relative min-w-[260px] bg-[#18191c]/80 border-1 border-teal-500">
+    <div
+      className="relative w-full min-w-[220px] md:min-w-[320px] max-w-full"
+      ref={dropdownRef}
+    >
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
         className={`
-          flex items-center justify-between w-full
-          text-3xl md:text-4xl font-black text-white
+          w-full flex items-center justify-between gap-2
+          text-base sm:text-lg md:text-2xl font-black text-white
+          px-4 py-4 sm:py-3
           rounded-none
-          px-4 py-3
-          shadow-none
-          transition
-          hover:border-teal-400 focus:outline-none
+          bg-black/15 backdrop-blur-[3px]
+          border-b-2 border-b-teal-400/20
+          shadow-sm
+          transition-all duration-150
+          focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60
+          hover:bg-teal-400/10 hover:border-teal-400/50
+          active:scale-[0.99]
         `}
         aria-haspopup="listbox"
         aria-expanded={open}
       >
-        <span>{value}</span>
-        <svg width={24} height={24} viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth={2} /></svg>
+        <span className="truncate">{value || "Seleccioná moneda"}</span>
+        <svg width={28} height={28} viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth={2} />
+        </svg>
       </button>
       <AnimatePresence>
         {open && (
@@ -40,11 +62,11 @@ export function CurrencyDropdown({
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.16 }}
             className={`
-            absolute left-0 w-full mt-1 z-40
-          bg-[#18181b] border border-white/10 rounded-none
-            shadow-xl
-            max-h-70 overflow-auto
-            scrollbar-glass
+              absolute left-0 w-full mt-1 z-40
+              bg-[#111214]/90 border border-teal-400/20 rounded-none
+              shadow-2xl
+              max-h-56 overflow-y-auto scrollbar-glass
+              backdrop-blur-xl
             `}
             tabIndex={-1}
           >
@@ -52,10 +74,13 @@ export function CurrencyDropdown({
               <li
                 key={c.code}
                 className={`
-                  px-4 py-3 text-xl font-black cursor-pointer
-                  hover:bg-teal-900/40
-                  ${value === c.code ? "text-teal-300 bg-teal-900/60" : "text-white"}
-                  transition
+                  px-4 py-4 sm:py-3 text-base md:text-lg font-semibold uppercase
+                  cursor-pointer select-none
+                  hover:bg-teal-800/40 hover:text-teal-200
+                  ${value === c.code ? "text-teal-300 bg-teal-900/70" : "text-white"}
+                  transition-all duration-100
+                  active:bg-teal-900/90
+                  rounded-none
                 `}
                 onClick={() => {
                   onChange(c.code);
@@ -64,7 +89,10 @@ export function CurrencyDropdown({
                 role="option"
                 aria-selected={value === c.code}
               >
-                {c.code} <span className="ml-2 text-gray-400 font-normal text-sm">{c.name}</span>
+                {c.code}
+                <span className="ml-2 text-gray-400 font-normal text-xs md:text-sm">
+                  {c.name}
+                </span>
               </li>
             ))}
           </motion.ul>

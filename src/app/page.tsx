@@ -5,23 +5,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import SalaryForm from "@/components/SalaryForm";
 import { SalaryList } from "@/components/Salary/SalaryList";
 import { Modal } from "@/components/Modal";
-import { StatsRow } from "@/components/StatsRow";        // Modularizado
-import { AddSalaryButton } from "@/components/AddSalaryButton"; // Modularizado
-import useSalaryStats from "@/hooks/useSalaryStats";
-import Squares from "@/components/Squares/Squares";
-import BlurText from "@/components/BlurText/BlurText";
+
+import Squares from "@/components/Squares/Squares";;
 import Faq from "@/components/Faq";
-import { TypingGradientText } from "@/components/TypingGradient";
+import Hero from "@/components/Hero";
 
 
 
 export default function HomePage() {
   const [showForm, setShowForm] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState("USD");
-  const { stats, loading, error } = useSalaryStats(selectedCurrency);
-  const handleAnimationComplete = () => {
-    console.log('Animation completed!');
-  };
   return (
     <main className="min-h-screen text-white font-sans antialiased pb-8">
       <div className="fixed inset-0 w-full min-h-full z-[-1] pointer-events-none">
@@ -35,55 +27,9 @@ export default function HomePage() {
       </div>
       <header className="w-full max-w-6xl mx-auto pt-10 pb-3 px-4 text-left relative">
 
+        <Hero onAddSalary={() => setShowForm(true)} />
 
-        {/* Hero */}
-        <motion.h1
-          className="text-6xl md:text-8xl font-black tracking-tight leading-[1.05] text-white mt-12"
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            delay: 0.5,          // Delay de 0.5s (500ms)
-            duration: 1.5,
-            type: "spring"
-          }}
-        >
-          <BlurText
-            text="Transparencia salarial IT sin bullshit"
-            animateBy="words"
-            direction="top"
-            delay={500}
 
-            onAnimationComplete={handleAnimationComplete}
-            className="text-6xl md:text-8xl font-black tracking-tight leading-[1.05] text-white mt-12"
-          />
-        </motion.h1>
-
-        <motion.p
-          className="mt-7 mb-10 text-lg md:text-xl text-gray-400 font-normal max-w-xl"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25, duration: 0.6 }}
-        >
-          Sin cuentas, sin mails, sin excusas. Datos reales y anónimos de LATAM y Europa.<br />
-          <span className="text-teal-300 md:text-md font-semibold tracking-wide"><TypingGradientText /></span>
-        </motion.p>
-
-        {/* StatsBar (Stats + CurrencyDropdown) */}
-        <StatsRow
-          stats={stats}
-          loading={loading}
-          error={error}
-          selectedCurrency={selectedCurrency}
-          setSelectedCurrency={setSelectedCurrency}
-        />
-
-        {/* Línea divisoria */}
-        <div className="border-t border-white/10 mt-8 pt-6" />
-
-        {/* Botón brutalista alineado a la izquierda */}
-        <div className="w-full flex justify-start">
-          <AddSalaryButton onClick={() => setShowForm(true)} />
-        </div>
       </header>
 
       {/* MODAL SalaryForm */}

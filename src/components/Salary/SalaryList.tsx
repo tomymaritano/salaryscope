@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState, useMemo } from "react";
+import { motion } from "framer-motion";
 import { FiltersBar } from "./FiltersBar";
 import { SalariesTable } from "./SalariesTable";
 import { ChartTabs } from "./ChartTabs";
@@ -132,19 +133,44 @@ export function SalaryList() {
   if (salaries.length === 0) return <p className="text-center text-gray-400">No hay salarios aún.</p>;
 
   return (
-    <section className="font-sans space-y-10">
+    <section className="font-sans space-y-10 px-2 sm:px-4 md:px-0">
       {/* Stats + filtros */}
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 border-b border-white/10 pb-3 mb-3">
-        <div className="flex gap-6 items-end">
-          <div className="flex flex-col">
-            <span className="text-3xl font-extrabold text-white">{filtered.length}</span>
-            <span className="text-xs uppercase text-gray-500 font-semibold tracking-wide">Registros</span>
-          </div>
-          <div className="flex flex-col ml-8">
-            <span className="text-lg font-black text-teal-400">{formatCurrency(avgAmount, topCurrency)}</span>
-            <span className="text-xs uppercase text-gray-500 font-semibold tracking-wide">Promedio</span>
+      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-y-6 gap-x-4 border-b border-white/10 pb-3 mb-3">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-y-6 gap-x-4 border-b border-white/10 pb-3 mb-3">
+          <div className="flex w-full justify-between gap-4 items-end">
+            {/* Registros */}
+            <div className="flex flex-col w-1/2 items-start">
+              <motion.span
+                key={filtered.length}
+                className="text-3xl md:text-3xl font-extrabold text-white leading-tight"
+                initial={{ scale: 0.95, opacity: 0.7 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.3, type: "spring" }}
+              >
+                {filtered.length}
+              </motion.span>
+              <span className="text-[13px] md:text-sm uppercase text-gray-500 font-semibold tracking-wide mt-1">
+                Registros
+              </span>
+            </div>
+            {/* Promedio */}
+            <div className="flex flex-col w-1/2 items-end md:items-start md:ml-8">
+              <motion.span
+                key={avgAmount + topCurrency}
+                className="text-xl md:text-3xl font-black text-white leading-tight"
+                initial={{ scale: 0.95, opacity: 0.7 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.3, type: "spring" }}
+              >
+                {formatCurrency(avgAmount, topCurrency)}
+              </motion.span>
+              <span className="text-xl md:text-sm uppercase text-gray-500 font-semibold tracking-wide mt-1">
+                Promedio
+              </span>
+            </div>
           </div>
         </div>
+        {/* Los filtros ya deberían ser responsivos, pero revisá FiltersBar */}
         <FiltersBar
           country={country}
           setCountry={setCountry}

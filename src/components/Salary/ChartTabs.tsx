@@ -137,7 +137,7 @@ export function ChartTabs({
         ))}
       </div>
       {/* Content */}
-      <div className="bg-[#18181b] border border-white/10 rounded-none-2xl p-6 min-h-[350px] flex flex-col justify-between">
+      <div className="bg-black/100 border border-white/10 rounded-none-2xl p-6 min-h-[350px] flex flex-col justify-between">
         {activeTab === "role" && (
           <CustomBarChart
             data={avgPerRole}
