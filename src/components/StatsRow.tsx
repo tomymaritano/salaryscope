@@ -18,7 +18,7 @@ export function StatsRow({
   setSelectedCurrency,
 }: StatsRowProps) {
   return (
-    <div className="w-full flex flex-col-reverse md:flex-row-reverse md:items-end md:justify-between gap-6 md:gap-0">
+    <div className="w-full flex flex-col-reverse md:flex-row-reverse md:items-start md:justify-between gap-6 md:gap-0">
       <div className="flex items-center gap-2">
         <CurrencyDropdown value={selectedCurrency} onChange={setSelectedCurrency} />
       </div>

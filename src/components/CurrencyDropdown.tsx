@@ -13,16 +13,15 @@ export function CurrencyDropdown({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="relative min-w-[260px]">
+    <div className="relative min-w-[260px] bg-teal-200/40">
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
         className={`
           flex items-center justify-between w-full
           text-3xl md:text-4xl font-black text-white
-          border-0 border-b-2 border-white/10 pb-2
-          rounded-noneed-none
-          px-4 py-1
+          rounded-none
+          px-4 py-3
           shadow-none
           transition
           hover:border-teal-400 focus:outline-none
