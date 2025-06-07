@@ -10,6 +10,7 @@ import { AddSalaryButton } from "@/components/AddSalaryButton"; // Modularizado
 import useSalaryStats from "@/hooks/useSalaryStats";
 import Squares from "@/components/Squares/Squares";
 import BlurText from "@/components/BlurText/BlurText";
+import Faq from "@/components/Faq";
 
 
 
@@ -31,12 +32,8 @@ export default function HomePage() {
           hoverFillColor='#222'
         />
       </div>
-      <header className="w-full max-w-6xl mx-auto pt-40 pb-3 px-4 text-left relative">
-        {/* Navbar */}
-        <nav className="absolute top-10 left-0 w-full px-0 flex justify-between items-center h-14 border-b border-white/5 backdrop-blur-sm z-30">
-          <span className="font-black text-lg tracking-tight text-white pl-2">HackLab SalaryBoard</span>
-          <a href="#opendata" className="text-sm text-gray-400 hover:text-white transition-all font-medium px-4">Ver datos</a>
-        </nav>
+      <header className="w-full max-w-6xl mx-auto pt-10 pb-3 px-4 text-left relative">
+
 
         {/* Hero */}
         <motion.h1
@@ -117,6 +114,9 @@ export default function HomePage() {
         <div className="border border-white/10 p-6 md:p-10">
           <SalaryList />
         </div>
+      </section>
+      <section className="max-w-6xl mx-auto px-4">
+        <Faq />
       </section>
     </main>
   );

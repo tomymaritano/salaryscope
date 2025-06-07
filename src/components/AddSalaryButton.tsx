@@ -26,7 +26,7 @@ export function AddSalaryButton({ onClick }: { onClick: () => void }) {
         transition={{ duration: 0.32 }}
       >
         <motion.div
-          className="absolute -top-3 -left-20 w-24 h-10 rotate-12 bg-gradient-to-r from-transparent via-white/15 to-transparent blur-[2px]"
+          className="absolute -top-3 -left-20 w-24 h-24 rotate-12 bg-gradient-to-r from-transparent via-white/15 to-transparent blur-[2px]"
           initial={{ x: -120 }}
           animate={{ x: 300 }}
           transition={{

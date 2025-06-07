@@ -13,7 +13,7 @@ export function CurrencyDropdown({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="relative min-w-[260px] bg-teal-200/40">
+    <div className="relative min-w-[260px] bg-[#18191c]/80 border-1 border-teal-500">
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
