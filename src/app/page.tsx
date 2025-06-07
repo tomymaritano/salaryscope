@@ -9,6 +9,7 @@ import { StatsRow } from "@/components/StatsRow";        // Modularizado
 import { AddSalaryButton } from "@/components/AddSalaryButton"; // Modularizado
 import useSalaryStats from "@/hooks/useSalaryStats";
 import Squares from "@/components/Squares/Squares";
+import BlurText from "@/components/BlurText/BlurText";
 
 
 
@@ -16,7 +17,9 @@ export default function HomePage() {
   const [showForm, setShowForm] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const { stats, loading, error } = useSalaryStats(selectedCurrency);
-
+  const handleAnimationComplete = () => {
+    console.log('Animation completed!');
+  };
   return (
     <main className="min-h-screen text-white font-sans antialiased pb-8">
       <div className="fixed inset-0 w-full min-h-full z-[-1] pointer-events-none">
@@ -40,10 +43,23 @@ export default function HomePage() {
           className="text-6xl md:text-8xl font-black tracking-tight leading-[1.05] text-white mt-12"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, type: "spring" }}
+          transition={{
+            delay: 0.5,          // Delay de 0.5s (500ms)
+            duration: 1.5,
+            type: "spring"
+          }}
         >
-          Transparencia salarial<br /><span className="text-[#D1D5DB]">IT sin bullshit</span>
+          <BlurText
+            text="Transparencia salarial IT sin bullshit"
+            animateBy="words"
+            direction="top"
+            delay={500}
+
+            onAnimationComplete={handleAnimationComplete}
+            className="text-6xl md:text-8xl font-black tracking-tight leading-[1.05] text-white mt-12"
+          />
         </motion.h1>
+
         <motion.p
           className="mt-7 mb-10 text-lg md:text-2xl text-gray-400 font-normal max-w-xl"
           initial={{ opacity: 0, y: 20 }}
