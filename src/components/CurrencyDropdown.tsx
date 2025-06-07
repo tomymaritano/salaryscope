@@ -13,7 +13,7 @@ export function CurrencyDropdown({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="relative min-w-[160px] mr-10">
+    <div className="relative min-w-[260px]">
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
@@ -21,7 +21,7 @@ export function CurrencyDropdown({
           flex items-center justify-between w-full
           text-3xl md:text-4xl font-black text-white
           border-0 border-b-2 border-white/10 pb-2
-          rounded-none
+          rounded-noneed-none
           px-4 py-1
           shadow-none
           transition
@@ -41,10 +41,11 @@ export function CurrencyDropdown({
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.16 }}
             className={`
-              absolute left-0 w-full mt-1 z-40
-              bg-[#18181b] border border-white/10 rounded-xl
-              shadow-xl
-              max-h-60 overflow-auto
+            absolute left-0 w-full mt-1 z-40
+          bg-[#18181b] border border-white/10 rounded-none
+            shadow-xl
+            max-h-70 overflow-auto
+            scrollbar-glass
             `}
             tabIndex={-1}
           >
@@ -64,7 +65,7 @@ export function CurrencyDropdown({
                 role="option"
                 aria-selected={value === c.code}
               >
-                {c.code} <span className="ml-2 text-base text-gray-400 font-medium">{c.name}</span>
+                {c.code} <span className="ml-2 text-gray-400 font-normal text-sm">{c.name}</span>
               </li>
             ))}
           </motion.ul>
