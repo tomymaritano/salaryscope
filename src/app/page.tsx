@@ -11,6 +11,7 @@ import useSalaryStats from "@/hooks/useSalaryStats";
 import Squares from "@/components/Squares/Squares";
 import BlurText from "@/components/BlurText/BlurText";
 import Faq from "@/components/Faq";
+import { TypingGradientText } from "@/components/TypingGradient";
 
 
 
@@ -58,13 +59,13 @@ export default function HomePage() {
         </motion.h1>
 
         <motion.p
-          className="mt-7 mb-10 text-lg md:text-2xl text-gray-400 font-normal max-w-xl"
+          className="mt-7 mb-10 text-lg md:text-xl text-gray-400 font-normal max-w-xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25, duration: 0.6 }}
         >
           Sin cuentas, sin mails, sin excusas. Datos reales y anónimos de LATAM y Europa.<br />
-          <span className="text-gray-300 font-semibold tracking-wide">Nunca pedimos tu info personal.</span>
+          <span className="text-teal-300 md:text-md font-semibold tracking-wide"><TypingGradientText /></span>
         </motion.p>
 
         {/* StatsBar (Stats + CurrencyDropdown) */}

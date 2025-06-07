@@ -1,22 +1,24 @@
-// app/layout.tsx (Next.js 13/14 App Router)
-import { Geist, Geist_Mono } from 'next/font/google'
-import './globals.css'
-import Footer from '@/components/Footer'
+// app/layout.tsx
+import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
+import "./globals.css";
+import Footer from "@/components/Footer";
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const spaceGrotesk = Space_Grotesk({
+  variable: '--font-space-grotesk',
   subsets: ['latin'],
-})
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+  display: 'swap',
+});
+const ibmMono = IBM_Plex_Mono({
+  variable: '--font-ibm-mono',
   subsets: ['latin'],
-})
+  display: 'swap',
+  weight: ['400'], // or include other weights as needed
+});
 
 export const metadata = {
   title: 'Hacklab Salary Board',
   description: 'Transparencia salarial IT sin bullshit',
-}
+};
 
 export default function RootLayout({
   children,
@@ -25,10 +27,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <main className="min-h-screen bg-black/90  text-white">{children}</main>
+      <body className={`${spaceGrotesk.variable} ${ibmMono.variable} antialiased`}>
+        <main className="min-h-screen bg-black/90 text-white font-sans">{children}</main>
         <Footer />
       </body>
     </html>
-  )
+  );
 }
