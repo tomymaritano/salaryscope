@@ -4,17 +4,34 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
-const faqs: { question: string; answer: React.ReactNode }[] = [
+const faqs = [
   {
-    question: "¿Por qué existe HackLab SalaryBoard?",
+    question: "¿Por qué existe SalaryBoard?",
     answer: (
       <>
-        Nace como parte de la familia <a
+        Porque la data salarial en tech debería ser **libre** y sin humo. Este proyecto nace desde <a
           href="https://hacklab.dog"
           target="_blank"
           rel="noopener noreferrer"
           className="text-teal-300 underline underline-offset-4 hover:text-white transition"
-        >hacklab.dog</a>, mi ecosistema personal de herramientas abiertas y recursos tech. Veía demasiada opacidad y ruido sobre salarios, sobre todo en LATAM, y quise aportar datos reales y accesibles, en sintonía con la filosofía hacker: compartir conocimiento y abrir caminos. Todo el código y recursos son abiertos y podés ver más en mi blog o en el <a
+        >hacklab.dog</a> para que cualquier persona, dev o no, pueda comparar salarios reales de forma **anónima**. Nada de gatekeeping ni formularios eternos.  
+        <br />
+        <span className="text-xs text-gray-400 block mt-1">La info es tuya, no de las empresas.</span>
+      </>
+    ),
+  },
+  {
+    question: "¿Quién lo hizo? ¿Quién mantiene esto?",
+    answer: (
+      <>
+        <span className="font-bold text-teal-200">Tomás Maritano</span> (<a
+          href="https://x.com/hacklabdog"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-teal-300 underline underline-offset-4 hover:text-white transition"
+        >@hacklabdog</a>).  
+        <br />  
+        Maker, builder, anti-bullshit. El código y los datos son **abiertos** en el <a
           href="https://github.com/tomymaritano/salaryscope"
           target="_blank"
           rel="noopener noreferrer"
@@ -24,92 +41,60 @@ const faqs: { question: string; answer: React.ReactNode }[] = [
     ),
   },
   {
-    question: "¿Quién está detrás de HackLab SalaryBoard?",
+    question: "¿Cómo está construido?",
     answer: (
       <>
-        El proyecto es de <span className="font-bold text-teal-200">Tomás Maritano</span> (<a
-          href="https://x.com/hacklabdog"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-teal-300 underline underline-offset-4 hover:text-white transition"
-        >@hacklabdog</a>), creador de <a
-          href="https://hacklab.dog"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-teal-300 underline underline-offset-4 hover:text-white transition"
-        >hacklab.dog</a> y varios recursos abiertos para makers, devs y freelancers. Todo lo que hago sigue una misma línea: transparencia, comunidad y empoderar a quienes quieren crecer en tecnología.
+        Con <span className="font-bold text-teal-200">Next.js 14</span>, <span className="font-bold text-teal-200">React</span>, <span className="font-bold text-teal-200">Tailwind CSS</span> y <span className="font-bold text-teal-200">Prisma/PostgreSQL</span>.  
+        El diseño: **minimalista, mobile-first y con glassmorphism** porque nos gusta lo simple y moderno.  
+        <br />
+        <span className="text-xs text-gray-400">Deploy directo en Vercel. Repo abierto para que chusmees o hackees.</span>
       </>
     ),
   },
   {
-    question: "¿Cómo está construida la plataforma?",
+    question: "¿Los datos son anónimos de verdad?",
     answer: (
       <>
-        La app está hecha con <span className="font-bold text-teal-200">Next.js 14</span>, <span className="font-bold text-teal-200">Tailwind CSS</span>, React y Prisma sobre PostgreSQL. El diseño es minimalista, mobile-first y con foco en experiencia de usuario. Todo corre en <a
-          href="https://vercel.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-teal-300 underline underline-offset-4 hover:text-white transition"
-        >Vercel</a> y es parte del ecosistema <a
-          href="https://hacklab.dog"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-teal-300 underline underline-offset-4 hover:text-white transition"
-        >hacklab.dog</a>. ¿Sos dev y querés chusmear o aportar? Mirá el repo en <a
+        **Siempre.**  
+        No se pide mail, ni nombre, ni nada identificable. Solo el dato necesario para comparar. Si querés ver cómo funciona, todo está en el repo (<a
           href="https://github.com/tomymaritano/salaryscope"
           target="_blank"
           rel="noopener noreferrer"
           className="text-teal-300 underline underline-offset-4 hover:text-white transition"
-        >GitHub</a>.
+        >README</a>).  
+        <br />
+        <span className="text-xs text-gray-400">Privacidad nivel paranoia.</span>
       </>
     ),
   },
   {
-    question: "¿Los datos son realmente anónimos?",
+    question: "¿Qué se viene? ¿Puedo proponer features?",
     answer: (
       <>
-        Siempre. No recolectamos mails ni nombres, solo los datos necesarios para generar estadísticas y comparaciones. El objetivo es que cualquiera se anime a compartir sin miedo y todos podamos tener un panorama más real del mercado. Podés leer más sobre cómo protegemos tu privacidad en nuestro <a
-          href="https://hacklab.dog/blog/privacy"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-teal-300 underline underline-offset-4 hover:text-white transition"
-        >blog</a> o en el <a
-          href="https://github.com/tomymaritano/salaryscope"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-teal-300 underline underline-offset-4 hover:text-white transition"
-        >README del repo</a>.
-      </>
-    ),
-  },
-  {
-    question: "¿Planeás sumar nuevas funciones?",
-    answer: (
-      <>
-        Sí. Quiero agregar <span className="font-bold text-teal-200">gráficos interactivos</span>, IA para resúmenes y análisis, exportar datos y dejar que la comunidad proponga features. Si tenés ideas, escribime por <a
-          href="https://x.com/hacklabdog"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-teal-300 underline underline-offset-4 hover:text-white transition"
-        >Twitter/X</a> o dejá tu sugerencia en el <a
+        Sí.  
+        Se vienen **más gráficos, IA para resúmenes automáticos, y export de datos**.  
+        Si sos dev y querés sumar ideas, hacé un PR o abrí un issue en <a
           href="https://github.com/tomymaritano/salaryscope/issues"
           target="_blank"
           rel="noopener noreferrer"
           className="text-teal-300 underline underline-offset-4 hover:text-white transition"
         >GitHub</a>.
+        <br />
+        <span className="text-xs text-gray-400">La comunidad propone, el código responde.</span>
       </>
     ),
   },
   {
-    question: "¿Cómo puedo apoyar el proyecto?",
+    question: "¿Cómo puedo bancar el proyecto?",
     answer: (
       <>
-        Con tu feedback, compartiendo el sitio, o invitando un <a
+        Con feedback, compartiendo el sitio o con un <a
           href="https://cafecito.app/hacklabdog"
           target="_blank"
           rel="noopener noreferrer"
           className="text-teal-300 underline underline-offset-4 hover:text-white transition"
-        >cafecito</a>. Todo va directo a mantener online la plataforma y a seguir creando cosas útiles para la comunidad. ¡Gracias!
+        >cafecito</a> ☕️.  
+        Todo suma para mantener la plataforma **abierta y online**.
       </>
     ),
   },
@@ -122,7 +107,7 @@ export default function Faq() {
     <section className="max-w-6xl mb-20">
       <h2 className="text-2xl font-black text-gray-200 mb-3 mt-16 text-left">Preguntas frecuentes</h2>
       <p className="text-base text-gray-500 mb-8 text-left">
-        Consultá salarios, filtrá por país, rol o seniority y mirá tendencias reales del mercado.
+        Respuestas cortas y sin vueltas. Preguntá más en X o en el repo si algo no está acá.
       </p>
       <div className="space-y-4">
         {faqs.map((faq, idx) => (

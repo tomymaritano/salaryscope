@@ -61,7 +61,7 @@ export function AddSalaryButton({ onClick }: { onClick: () => void }) {
 
       <UploadCloud size={26} className="text-white drop-shadow-sm md:text-white" />
       <span className="relative z-20 drop-shadow text-base md:text-sm font-bold">
-        Cargar salario
+        push salary
       </span>
     </motion.button>
   );

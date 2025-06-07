@@ -36,7 +36,7 @@ export function ViewDataButton({ onClick }: { onClick: () => void }) {
       transition={{ delay: 0.16, duration: 0.36, type: "spring" }}
     >
       <span className="relative z-20 drop-shadow text-base md:text-sm font-bold">
-        Ver datos
+query salarios
       </span>
       <AnimatePresence>
         {hovered && (

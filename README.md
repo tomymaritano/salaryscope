@@ -1,41 +1,63 @@
-# 🚀 HackLab SalaryBoard
+# 💸 SalaryBoard by HackLab.dog
 
-Transparencia salarial IT, sin bullshit.  
-Accedé, consultá y compartí salarios reales de LATAM y Europa. Sin cuentas, sin mails, sin excusas.  
-Proyecto open source, parte del ecosistema [hacklab.dog](https://hacklab.dog).
-
----
-
-## 🧐 ¿Por qué existe este proyecto?
-
-En la industria tech, la información sobre salarios suele estar fragmentada, llena de ruido o “filtrada” por empresas con otros intereses.  
-**HackLab SalaryBoard** nace para cambiar eso: datos reales, comunidad abierta, anonimato total, y acceso libre.  
-Forma parte de la familia de herramientas de [hacklab.dog](https://hacklab.dog) y sigue la misma filosofía hacker: compartir, abrir caminos y empoderar a quienes quieren crecer.
+> Transparencia salarial IT. Sin humo. Sin drama.  
+> Open, anónimo, sin registros. Compará y compartí salarios reales de LATAM y Europa.
 
 ---
 
-## ✨ Features
+## 🚀 ¿Qué es SalaryBoard?
 
-- Consultá salarios IT de LATAM y Europa
-- Filtros por país, rol y seniority
-- Cargá tu salario de forma 100% anónima
-- Visualización de estadísticas y tendencias
-- Mobile-first, UI minimalista y accesible
-- Sin cuentas ni emails, sin tracking invasivo
+**SalaryBoard** es una plataforma open-source para consultar y compartir salarios del sector tech.  
+Sin cuentas, sin e-mails, sin vueltas. Los datos son **anónimos** y abiertos a la comunidad.
+
+- Consultá salarios por país, rol, seniority, stack y tipo de contrato.
+- Filtrá y visualizá tendencias del mercado en tiempo real.
+- Compartí tu propio salario en 1 minuto (sin identificadores personales).
+- Proyecto open-source: [Ver código en GitHub](https://github.com/tomymaritano/salaryscope)
+- Inspirado y mantenido por [hacklab.dog](https://hacklab.dog), comunidad y recursos tech para makers.
+
+---
+
+## 🧑‍💻 ¿Por qué lo hicimos?
+
+Porque la data salarial debe ser **libre**, **anónima** y **de acceso público**.  
+En el sector tech todavía hay mucha opacidad, desigualdad y bullshit corporativo.  
+SalaryBoard nace para cambiar eso: **la información es tuya, no de una empresa**.
+
+---
+
+## 🌎 ¿Cómo funciona?
+
+1. **Consultá:** Navegá los salarios cargados, filtrá por país, stack, rol, seniority y más.
+2. **Cargá tu salario:** Completá el formulario sin registros.  
+   _No pedimos mails, ni nombres, ni nada identificable._
+3. **Visualizá tendencias:** Promedios, gráficos y comparativas.
+4. **Descargá, hackeá, contribuí:** El código es tuyo. Hacé fork, PR o abrí un issue.
 
 ---
 
 ## 🛠️ Stack tecnológico
 
-- **Next.js 14**
-- **React 18**
-- **Tailwind CSS** para el diseño UI
-- **Prisma ORM** y **PostgreSQL**
-- Deploy serverless con **Vercel**
+- **Frontend:** [Next.js 14](https://nextjs.org/), [React](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/), Framer Motion.
+- **Backend:** [Prisma ORM](https://prisma.io/), [PostgreSQL](https://www.postgresql.org/).
+- **Infra:** Deploy automático en [Vercel](https://vercel.com/) (también dockerizable).
+- **Diseño:** Minimalista, mobile-first, glassmorphism sutil.
+- **Animaciones:** Framer Motion.
 
 ---
 
-## 🚦 Cómo correrlo localmente
+## 🕶️ Características
+
+- **100% anónimo:** No guardamos ni pedimos datos privados.
+- **Open Data:** Podés consultar, analizar o reutilizar la data para lo que quieras.
+- **Comunidad:** Cualquiera puede contribuir, proponer features o reportar bugs.
+- **Mobile-first:** Funciona perfecto en cualquier dispositivo.
+- **Sin publicidad, sin monetización oscura.**
+- **Privacidad extrema:** El código es público, podés ver cómo se maneja cada dato.
+
+---
+
+## ⚡ Instalación local
 
 ```bash
 # 1. Cloná el repo
@@ -45,13 +67,11 @@ cd salaryscope
 # 2. Instalá dependencias
 npm install
 
-# 3. Configurá las variables de entorno
-# (ver .env.example para referencias)
-cp .env.example .env.local
-# Editá .env.local con tu DATABASE_URL de PostgreSQL
+# 3. Configurá las variables de entorno (ver .env.example)
+cp .env.example .env
 
-# 4. Ejecutá las migraciones de la base de datos
-npx prisma migrate dev
+# 4. Iniciá la base de datos (necesitás PostgreSQL local o remoto)
+npx prisma migrate dev --name init
 
-# 5. Corré la app
+# 5. Iniciá la app
 npm run dev

@@ -26,9 +26,9 @@ export default function Hero({ onAddSalary }: { onAddSalary: () => void }) {
         max-w-6xl mx-auto pt-8 sm:pt-10 pb-10
       "
     >
-      {/* Título grande */}
+      {/* Título terminal */}
       <motion.h1
-        className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight leading-[1.05] text-white mb-4"
+        className="text-7xl sm:text-8xl md:text-8xl font-black tracking-tight leading-[1.05] text-white mb-4 font-mono"
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{
@@ -38,23 +38,27 @@ export default function Hero({ onAddSalary }: { onAddSalary: () => void }) {
         }}
       >
         <BlurText
-          text="Transparencia salarial IT sin bullshit"
+          text="$ salaryboard status --no-bs"
           animateBy="words"
           direction="top"
           delay={500}
-          className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight leading-[1.05] text-white"
+          className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight leading-[1.05] text-white font-mono"
         />
       </motion.h1>
 
-      {/* Subtítulo */}
+      {/* Subtítulo como log */}
       <motion.p
-        className="mt-6 mb-10 text-lg md:text-2xl text-gray-400 font-normal max-w-xl"
+        className="mt-6 mb-10 text-lg md:text-2xl text-gray-400 font-normal max-w-xl font-mono"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.65, duration: 0.6 }}
       >
-        Sin cuentas, sin mails, sin excusas. Datos reales y anónimos de LATAM y Europa.<br />
-        <span className="text-teal-300 md:text-md font-semibold tracking-wide">
+        <span className="text-teal-300 text-md font-bold mr-2">$</span>
+        <span className="text-white/90">
+          No login, no drama. Solo data, directo de devs reales.
+        </span>
+        <br />
+        <span className="block mt-2">
           <TypingGradientText />
         </span>
       </motion.p>
@@ -73,7 +77,6 @@ export default function Hero({ onAddSalary }: { onAddSalary: () => void }) {
       {/* Botones */}
       <div className="w-full flex flex-col sm:flex-row gap-3 justify-start mt-4">
         <AddSalaryButton onClick={onAddSalary} />
-        {/* PASALE EL HANDLER COMO PROP */}
         <ViewDataButton onClick={handleScrollToData} />
       </div>
     </section>
