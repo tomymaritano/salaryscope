@@ -1,7 +1,6 @@
 "use client";
-import {  SiLinkedin, SiGithub, SiX } from "react-icons/si";
-import { FaBlog, FaHome } from "react-icons/fa";
-
+import { FaBlog, FaGithub, FaHome, FaLinkedin } from "react-icons/fa";
+import { BsTwitterX } from "react-icons/bs";
 import { FaCoffee } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -22,17 +21,17 @@ const socials = [
   {
     label: "LinkedIn",
     href: "https://www.linkedin.com/in/tomasmaritano/",
-    icon: <SiLinkedin size={22} />,
+    icon: <FaLinkedin size={22} />,
   },
   {
     label: "GitHub",
     href: "https://github.com/tomymaritano",
-    icon: <SiGithub size={22} />,
+    icon: <FaGithub size={22} />,
   },
   {
     label: "X (Twitter)",
     href: "https://x.com/hacklabdog",
-    icon: <SiX size={22} />, // Este es el icono de X de Simple Icons
+    icon: <BsTwitterX size={22} />, // Este es el icono de X de Simple Icons
   },
 ];
 
