@@ -1,37 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 HackLab SalaryBoard
 
-## Getting Started
+Transparencia salarial IT, sin bullshit.  
+Accedé, consultá y compartí salarios reales de LATAM y Europa. Sin cuentas, sin mails, sin excusas.  
+Proyecto open source, parte del ecosistema [hacklab.dog](https://hacklab.dog).
 
-First, run the development server:
+---
+
+## 🧐 ¿Por qué existe este proyecto?
+
+En la industria tech, la información sobre salarios suele estar fragmentada, llena de ruido o “filtrada” por empresas con otros intereses.  
+**HackLab SalaryBoard** nace para cambiar eso: datos reales, comunidad abierta, anonimato total, y acceso libre.  
+Forma parte de la familia de herramientas de [hacklab.dog](https://hacklab.dog) y sigue la misma filosofía hacker: compartir, abrir caminos y empoderar a quienes quieren crecer.
+
+---
+
+## ✨ Features
+
+- Consultá salarios IT de LATAM y Europa
+- Filtros por país, rol y seniority
+- Cargá tu salario de forma 100% anónima
+- Visualización de estadísticas y tendencias
+- Mobile-first, UI minimalista y accesible
+- Sin cuentas ni emails, sin tracking invasivo
+
+---
+
+## 🛠️ Stack tecnológico
+
+- **Next.js 14**
+- **React 18**
+- **Tailwind CSS** para el diseño UI
+- **Prisma ORM** y **PostgreSQL**
+- Deploy serverless con **Vercel**
+
+---
+
+## 🚦 Cómo correrlo localmente
 
 ```bash
+# 1. Cloná el repo
+git clone https://github.com/tomymaritano/salaryscope.git
+cd salaryscope
+
+# 2. Instalá dependencias
+npm install
+
+# 3. Configurá las variables de entorno
+# (ver .env.example para referencias)
+cp .env.example .env.local
+# Editá .env.local con tu DATABASE_URL de PostgreSQL
+
+# 4. Ejecutá las migraciones de la base de datos
+npx prisma migrate dev
+
+# 5. Corré la app
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# salaryscope
