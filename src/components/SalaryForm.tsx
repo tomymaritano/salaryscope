@@ -461,14 +461,6 @@ interface FieldProps {
   className?: string;
   children: React.ReactNode;
 }
-// --- Field pro, tipado ---
-interface FieldProps {
-  label: string;
-  htmlFor?: string;
-  error?: unknown;
-  className?: string;
-  children: React.ReactNode;
-}
 function Field({ label, htmlFor, error, className = "", children }: FieldProps) {
   return (
     <div className={`flex flex-col gap-1 ${className}`}>
