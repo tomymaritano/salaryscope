@@ -1,60 +1,45 @@
-export type RateLimitInfo = {
-  count: number;
-  lastRequest: number;
-};
+const URL = process.env.UPSTASH_REDIS_REST_URL;
+const TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
 
-import type { Redis } from 'ioredis';
+const WINDOW = 60; // seconds
+const LIMIT = 5;
 
-let redis: Redis | null = null;
-if (process.env.REDIS_URL) {
-  try {
-    const Redis = require('ioredis');
-    redis = new Redis(process.env.REDIS_URL);
-  } catch {
-    console.warn('ioredis not installed, falling back to in-memory store');
+async function incr(key: string): Promise<number> {
+  if (!URL || !TOKEN) {
+    return 0;
   }
+
+  const res = await fetch(`${URL}/incr/${key}`, {
+    headers: { Authorization: `Bearer ${TOKEN}` },
+    cache: 'no-store',
+  });
+
+  if (!res.ok) {
+    console.error('Rate limit error', await res.text());
+    return 0;
+  }
+
+  const data = (await res.json()) as { result: number };
+  return data.result;
 }
 
-const globalForRateLimiter = globalThis as unknown as {
-  rateLimiter?: Map<string, RateLimitInfo>;
-};
-
-const store =
-  globalForRateLimiter.rateLimiter ?? new Map<string, RateLimitInfo>();
-
-if (process.env.NODE_ENV !== 'production') {
-  globalForRateLimiter.rateLimiter = store;
+async function expire(key: string) {
+  if (!URL || !TOKEN) return;
+  await fetch(`${URL}/expire/${key}/${WINDOW}`, {
+    headers: { Authorization: `Bearer ${TOKEN}` },
+    cache: 'no-store',
+  });
 }
-
-const WINDOW = parseInt(process.env.RATE_LIMIT_WINDOW || '60000', 10);
-const LIMIT = parseInt(process.env.RATE_LIMIT_LIMIT || '5', 10);
 
 export async function isRateLimited(key: string): Promise<boolean> {
-  if (redis) {
-    const redisKey = `ratelimit:${key}`;
-    const count = await redis.incr(redisKey);
+  try {
+    const count = await incr(key);
     if (count === 1) {
-      await redis.pexpire(redisKey, WINDOW);
+      await expire(key);
     }
     return count > LIMIT;
-  }
-
-  const now = Date.now();
-  const info = store.get(key);
-
-  if (!info) {
-    store.set(key, { count: 1, lastRequest: now });
+  } catch (err) {
+    console.error('Rate limit check failed', err);
     return false;
   }
-
-  if (now - info.lastRequest > WINDOW) {
-    store.set(key, { count: 1, lastRequest: now });
-    return false;
-  }
-
-  info.count += 1;
-  info.lastRequest = now;
-  store.set(key, info);
-
-  return info.count > LIMIT;
 }

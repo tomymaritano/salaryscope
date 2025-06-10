@@ -5,32 +5,24 @@ import { z } from 'zod';
 
 export async function GET(req: NextRequest) {
   try {
-    const pageParam = req.nextUrl.searchParams.get('page');
-    const pageSizeParam = req.nextUrl.searchParams.get('pageSize');
-
     const querySchema = z.object({
-      page: z
-        .preprocess(
-          (v) => (v === undefined ? undefined : Number(v)),
-          z.number().int().positive().default(1)
-        ),
-      pageSize: z
-        .preprocess(
-          (v) => (v === undefined ? undefined : Number(v)),
-          z.number().int().positive().default(10)
-        ),
+      page: z.preprocess(
+        (v) => (v === null || v === undefined ? 1 : parseInt(String(v), 10)),
+        z.number().int().positive()
+      ),
+      pageSize: z.preprocess(
+        (v) => (v === null || v === undefined ? 10 : parseInt(String(v), 10)),
+        z.number().int().positive().max(100)
+      ),
     });
 
     const parsed = querySchema.safeParse({
-      page: pageParam ?? undefined,
-      pageSize: pageSizeParam ?? undefined,
+      page: req.nextUrl.searchParams.get('page'),
+      pageSize: req.nextUrl.searchParams.get('pageSize'),
     });
 
     if (!parsed.success) {
-      return NextResponse.json(
-        { error: 'Invalid pagination parameters' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid pagination parameters' }, { status: 400 });
     }
 
     const { page, pageSize } = parsed.data;
