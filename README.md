@@ -5,6 +5,12 @@
 
 ---
 
+## 🇬🇧 About SalaryBoard
+
+**SalaryBoard** is an open-source platform where tech workers can share and view salaries anonymously. Browse by country, role or seniority and contribute your own data without sign ups.
+
+---
+
 ## 🚀 ¿Qué es SalaryBoard?
 
 **SalaryBoard** es una plataforma open-source para consultar y compartir salarios del sector tech.  
@@ -79,10 +85,27 @@ npm run dev
 
 Abrí <http://localhost:3000> en tu navegador para verificar que todo funcione.
 
+## ✅ Tests
+
+Para ejecutar la suite de pruebas:
+
+```bash
+npm test
+```
+
+## Commands
+
+- `npm run dev` – entorno de desarrollo
+- `npm run build` – compilar la aplicación
+- `npm start` – iniciar la versión compilada
+- `npm test` – correr tests
+- `npm run lint` – ejecutar ESLint
+- `npm run format` – formatear con Prettier
+
 ## Observaciones y mejoras pendientes
 
 - Eliminar rutas de depuración o protegerlas con autenticación.
-- Crear archivo `.env.example` con las variables requeridas.
-- Agregar configuración de Tailwind (`tailwind.config.ts`).
+- Crear archivo `.env.example` con las variables requeridas. ✅
+- Agregar configuración de Tailwind (`tailwind.config.ts`). ✅
 - Validar y limitar las peticiones a la API.
 - Incluir tests y flujo de CI para lint y pruebas.

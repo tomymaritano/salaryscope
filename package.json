@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "format": "prettier --write .",
     "postinstall": "prisma generate",
     "test": "jest"
   },
@@ -46,6 +47,7 @@
     "jest-environment-jsdom": "^29.6.0",
     "@testing-library/react": "^14.1.0",
     "@testing-library/jest-dom": "^6.1.0",
-    "@testing-library/user-event": "^14.4.3"
+    "@testing-library/user-event": "^14.4.3",
+    "prettier": "^3.2.5"
   }
 }
