@@ -75,3 +75,26 @@ npx prisma migrate dev --name init
 
 # 5. Iniciá la app
 npm run dev
+```
+
+## 📋 Uso
+
+Seguí los pasos anteriores para levantar el proyecto en modo desarrollo. Una vez en marcha, visita `http://localhost:3000` para ver la app.
+
+## 🔧 Variables de entorno
+
+Crea un archivo `.env` con al menos la siguiente variable:
+
+```
+DATABASE_URL=postgresql://usuario:password@localhost:5432/salaryscope
+```
+
+Ajusta los valores según tu configuración local o remota.
+
+## 🧪 Ejecutar pruebas
+
+El proyecto no cuenta aún con una suite de tests automatizados. Puedes ejecutar `npm run lint` para revisar el código y asegurarte de que la base de datos esté configurada correctamente con `npx prisma generate`.
+
+## 🙌 Contribuir
+
+Los pull requests son bienvenidos. Abre un issue para reportar errores o proponer mejoras.
