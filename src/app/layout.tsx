@@ -2,6 +2,9 @@
 import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
+import { NextIntlClientProvider } from "next-intl";
+import { notFound } from "next/navigation";
+import { getMessages, locales } from "@/lib/i18n";
 
 
 export const metadata = {
@@ -41,16 +44,25 @@ const ibmMono = IBM_Plex_Mono({
 });
 
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
+  params?: { locale?: string };
 }) {
+  const locale = params?.locale ?? "es";
+  if (!locales.includes(locale as any)) {
+    notFound();
+  }
+  const messages = await getMessages(locale);
   return (
-    <html lang="es">
+    <html lang={locale}>
       <body className={`${spaceGrotesk.variable} ${ibmMono.variable} antialiased`}>
-        <main className="min-h-screen bg-black/90 text-white font-sans">{children}</main>
-        <Footer />
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <main className="min-h-screen bg-black/90 text-white font-sans">{children}</main>
+          <Footer />
+        </NextIntlClientProvider>
       </body>
     </html>
   );
