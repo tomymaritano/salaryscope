@@ -8,10 +8,11 @@ export default function useSalaryStats(currency: string) {
 
   // Mejor con useEffect sólo si cambia la currency
   useEffect(() => {
-    setLoading(true);
-    fetch(`/api/salaries/stats?currency=${currency}`)
-      .then(res => res.json())
-      .then(data => {
+    async function fetchStats() {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/salaries/stats?currency=${currency}`);
+        const data = await res.json();
         if (data.error) {
           setStats(null);
           setError(data.error);
@@ -19,12 +20,14 @@ export default function useSalaryStats(currency: string) {
           setStats(data);
           setError(null);
         }
-      })
-      .catch(() => {
+      } catch {
         setStats(null);
         setError("Error cargando estadísticas");
-      })
-      .finally(() => setLoading(false));
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchStats();
   }, [currency]);
 
   return { stats, loading, error };
