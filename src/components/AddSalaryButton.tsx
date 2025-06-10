@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { UploadCloud } from "lucide-react";
 
-// (No te olvides del shimmer del ejemplo anterior en el CSS global)
+// Remember to include the shimmer animation styles in your global CSS
 
 export function AddSalaryButton({ onClick }: { onClick: () => void }) {
   return (
