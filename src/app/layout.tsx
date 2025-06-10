@@ -2,6 +2,8 @@
 import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
+import { NextIntlClientProvider } from "next-intl";
+import esMessages from "../i18n/es.json";
 
 
 export const metadata = {
@@ -49,8 +51,10 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${spaceGrotesk.variable} ${ibmMono.variable} antialiased`}>
-        <main className="min-h-screen bg-black/90 text-white font-sans">{children}</main>
-        <Footer />
+        <NextIntlClientProvider locale="es" messages={esMessages}>
+          <main className="min-h-screen bg-black/90 text-white font-sans">{children}</main>
+          <Footer />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

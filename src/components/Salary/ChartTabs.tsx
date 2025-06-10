@@ -2,6 +2,7 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, PieChart, Pie, Cell, Legend
 } from "recharts";
 import { SeniorityDist } from "./types";
+import { useTranslations } from "next-intl";
 
 const COLORS = ["#14b8a6", "#60a5fa", "#eab308", "#f472b6", "#f87171", "#4ade80", "#a78bfa", "#facc15"];
 
@@ -17,9 +18,9 @@ interface AvgCountry {
 }
 
 const chartTabs = [
-  { key: "role", label: "Promedio por Rol" },
-  { key: "country", label: "Promedio por País" },
-  { key: "seniority", label: "Distribución Seniority" },
+  { key: "role", labelKey: "charts.avgByRole" },
+  { key: "country", labelKey: "charts.avgByCountry" },
+  { key: "seniority", labelKey: "charts.seniorityDist" },
 ] as const;
 
 type TabKey = typeof chartTabs[number]["key"];
@@ -46,17 +47,18 @@ function CustomBarChart({
   barColor: string;
   currency: string;
 }) {
+  const t = useTranslations();
   if (!currency) {
     return (
       <div className="flex flex-1 items-center justify-center text-center text-gray-500 font-bold text-lg">
-        Seleccioná una moneda para ver los promedios salariales.
+        {t("charts.selectCurrency")}
       </div>
     );
   }
   if (!data.length) {
     return (
       <div className="flex flex-1 items-center justify-center text-center text-gray-500 font-bold text-lg">
-        No hay datos para mostrar.
+        {t("charts.noData")}
       </div>
     );
   }
@@ -82,16 +84,17 @@ function CustomBarChart({
 }
 
 function SeniorityChart({ data }: { data: SeniorityDist[] }) {
+  const t = useTranslations();
   if (!data.length) {
     return (
       <div className="flex flex-1 items-center justify-center text-center text-gray-500 font-bold text-lg">
-        No hay datos de seniority.
+        {t('charts.noSeniority')}
       </div>
     );
   }
   return (
     <>
-      <h3 className="font-bold mb-2 text-gray-200 text-center uppercase text-sm tracking-widest">Distribución de seniorities</h3>
+      <h3 className="font-bold mb-2 text-gray-200 text-center uppercase text-sm tracking-widest">{t('charts.seniorityDist')}</h3>
       <ResponsiveContainer width="100%" height={260}>
         <PieChart>
           <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={90} label>
@@ -118,6 +121,7 @@ export function ChartTabs({
   seniorityDist,
   currency,
 }: ChartTabsProps) {
+  const t = useTranslations();
   return (
     <div className="w-full flex flex-col gap-3 mt-8">
       {/* Tabs */}
@@ -132,7 +136,7 @@ export function ChartTabs({
                 : "border-transparent text-gray-500 hover:text-teal-400"}`}
             style={{ fontSize: 15, background: "none" }}
           >
-            {tab.label}
+            {t(tab.labelKey)}
           </button>
         ))}
       </div>
@@ -142,7 +146,7 @@ export function ChartTabs({
           <CustomBarChart
             data={avgPerRole}
             xKey="role"
-            label="Promedio salarial por Rol"
+            label={t('charts.avgByRole')}
             barColor="#14b8a6"
             currency={currency}
           />
@@ -151,7 +155,7 @@ export function ChartTabs({
           <CustomBarChart
             data={avgPerCountry}
             xKey="country"
-            label="Promedio salarial por País"
+            label={t('charts.avgByCountry')}
             barColor="#60a5fa"
             currency={currency}
           />

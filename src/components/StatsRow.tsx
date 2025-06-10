@@ -1,6 +1,7 @@
 // components/StatsRow.tsx
 import { CurrencyDropdown } from "./CurrencyDropdown";
 import { Stat } from "./Stat";
+import { useTranslations } from "next-intl";
 
 interface StatsRowProps {
   stats: { total: number; avg: number; currency: string } | null;
@@ -17,6 +18,7 @@ export function StatsRow({
   selectedCurrency,
   setSelectedCurrency,
 }: StatsRowProps) {
+  const t = useTranslations();
   return (
     <div className="w-full flex flex-col-reverse md:flex-row-reverse md:items-start md:justify-between gap-6 md:gap-0">
       <div className="flex items-center gap-2">
@@ -32,11 +34,11 @@ export function StatsRow({
           <span className="text-red-400 text-sm">{error}</span>
         ) : stats ? (
           <>
-            <Stat label="Salarios cargados" value={stats.total.toLocaleString()} />
-            <Stat label="Salario promedio" value={`${stats.avg.toLocaleString()} ${stats.currency}`} />
+            <Stat label={t("stats.loaded")} value={stats.total.toLocaleString()} />
+            <Stat label={t("stats.avg")} value={`${stats.avg.toLocaleString()} ${stats.currency}`} />
           </>
         ) : (
-          <span className="text-red-400 text-sm">No hay stats</span>
+          <span className="text-red-400 text-sm">{t("stats.noStats")}</span>
         )}
       </div>
     </div>

@@ -1,14 +1,17 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function ViewDataButton({ onClick }: { onClick: () => void }) {
   const [hovered, setHovered] = React.useState(false);
+  const t = useTranslations("buttons");
 
   return (
     <motion.button
       onClick={onClick}
       type="button"
+      aria-label={t("viewData")}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className={`
@@ -36,7 +39,7 @@ export function ViewDataButton({ onClick }: { onClick: () => void }) {
       transition={{ delay: 0.16, duration: 0.36, type: "spring" }}
     >
       <span className="relative z-20 drop-shadow text-base md:text-sm font-bold">
-query salarios
+        {t("viewData")}
       </span>
       <AnimatePresence>
         {hovered && (

@@ -8,10 +8,12 @@ import { AddSalaryButton } from "@/components/AddSalaryButton";
 import { StatsRow } from "./StatsRow";
 import useSalaryStats from "@/hooks/useSalaryStats";
 import { ViewDataButton } from "./ViewDataButton";
+import { useTranslations } from "next-intl";
 
 export default function Hero({ onAddSalary }: { onAddSalary: () => void }) {
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const { stats, loading, error } = useSalaryStats(selectedCurrency);
+  const t = useTranslations();
 
   // Scroll smooth a la sección de datos
   const handleScrollToData = () => {
@@ -55,7 +57,7 @@ export default function Hero({ onAddSalary }: { onAddSalary: () => void }) {
       >
         <span className="text-teal-300 text-md font-bold mr-2">$</span>
         <span className="text-white/90">
-          No login, no drama. Solo data, directo de devs reales.
+          {t('hero.noDrama')}
         </span>
         <br />
         <span className="block mt-2">

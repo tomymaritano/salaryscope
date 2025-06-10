@@ -1,0 +1,47 @@
+{
+  "buttons": {
+    "addSalary": "push salary",
+    "viewData": "query salaries"
+  },
+  "hero": {
+    "noDrama": "No login, no drama. Just real dev data."
+  },
+  "openData": {
+    "heading": "$ open data",
+    "description": "Browse salaries, filter by country, role or seniority and see real market trends."
+  },
+  "modal": {
+    "title": "Enter your salary",
+    "tip": "Tip: <kbd>Ctrl+K</kbd> to quickly search roles."
+  },
+  "stats": {
+    "loaded": "Salaries loaded",
+    "avg": "Average salary",
+    "noStats": "No stats"
+  },
+  "messages": {
+    "loading": "Loading...",
+    "noData": "No salaries yet.",
+    "error": "Unknown error",
+    "records": "Records"
+  },
+  "charts": {
+    "avgByRole": "Average salary by Role",
+    "avgByCountry": "Average salary by Country",
+    "seniorityDist": "Seniority distribution",
+    "selectCurrency": "Select a currency to view salary averages.",
+    "noData": "No data to display.",
+    "noSeniority": "No seniority data."
+  },
+  "table": {
+    "country": "Country",
+    "role": "Role",
+    "stack": "Stack",
+    "contract": "Contract",
+    "seniority": "Seniority",
+    "salary": "Salary",
+    "date": "Date",
+    "prev": "Previous",
+    "next": "Next"
+  }
+}

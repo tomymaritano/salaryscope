@@ -1,5 +1,6 @@
 // components/Salary/SalariesTable.tsx
 import { Salary } from "./types";
+import { useTranslations } from "next-intl";
 
 interface SalariesTableProps {
   paged: Salary[];
@@ -16,13 +17,14 @@ export function SalariesTable({
   setPage,
   formatCurrency,
 }: SalariesTableProps) {
+  const t = useTranslations();
   return (
     <div className="w-full">
 
       {/* Mobile: Cards */}
       <div className="md:hidden flex flex-col gap-3 mt-2">
         {paged.length === 0 && (
-          <div className="text-center text-gray-400 text-base py-6">No hay salarios aún.</div>
+          <div className="text-center text-gray-400 text-base py-6">{t('messages.noData')}</div>
         )}
         {paged.map((s) => (
           <div
@@ -53,13 +55,13 @@ export function SalariesTable({
           <table className="min-w-full text-sm font-normal backdrop-blur-2xl bg-black/80 border-separate border-spacing-0">
             <thead>
               <tr className="sticky items-start top-0 z-20 bg-black/80 backdrop-blur-xl border-b border-white/10">
-                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">País</th>
-                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">Rol</th>
-                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">Stack</th>
-                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">Contrato</th>
-                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">Seniority</th>
-                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">Salario</th>
-                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">Fecha</th>
+                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">{t('table.country')}</th>
+                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">{t('table.role')}</th>
+                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">{t('table.stack')}</th>
+                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">{t('table.contract')}</th>
+                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">{t('table.seniority')}</th>
+                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">{t('table.salary')}</th>
+                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">{t('table.date')}</th>
               </tr>
             </thead>
             <tbody>
@@ -90,9 +92,9 @@ export function SalariesTable({
       {/* Pagination (compartida) */}
       {pageCount > 1 && (
         <div className="flex justify-center items-center gap-2 py-5">
-          <button disabled={page === 1} onClick={() => setPage(page - 1)} className="px-3 py-1 rounded-none bg-[#18181b] text-gray-400 border border-white/10 hover:text-white hover:border-teal-400 disabled:opacity-50 text-xs font-semibold transition">Anterior</button>
+          <button disabled={page === 1} onClick={() => setPage(page - 1)} className="px-3 py-1 rounded-none bg-[#18181b] text-gray-400 border border-white/10 hover:text-white hover:border-teal-400 disabled:opacity-50 text-xs font-semibold transition">{t('table.prev')}</button>
           <span className="text-xs px-2">{page}/{pageCount}</span>
-          <button disabled={page === pageCount} onClick={() => setPage(page + 1)} className="px-3 py-1 rounded-none bg-[#18181b] text-gray-400 border border-white/10 hover:text-white hover:border-teal-400 disabled:opacity-50 text-xs font-semibold transition">Siguiente</button>
+          <button disabled={page === pageCount} onClick={() => setPage(page + 1)} className="px-3 py-1 rounded-none bg-[#18181b] text-gray-400 border border-white/10 hover:text-white hover:border-teal-400 disabled:opacity-50 text-xs font-semibold transition">{t('table.next')}</button>
         </div>
       )}
     </div>
