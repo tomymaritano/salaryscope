@@ -43,6 +43,11 @@ export function SalariesTable({
               <span>{s.stack.slice(0, 2).join(", ")}</span>
             </div>
             <div className="text-[11px] text-gray-500 mt-2">{new Date(s.createdAt).toLocaleDateString()}</div>
+            {s.ipfsCid && (
+              <div className="text-[11px] text-teal-400 break-all">
+                CID: <a href={`https://ipfs.io/ipfs/${s.ipfsCid}`} target="_blank" rel="noopener noreferrer">{s.ipfsCid}</a>
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -60,6 +65,7 @@ export function SalariesTable({
                 <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">Seniority</th>
                 <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">Salario</th>
                 <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">Fecha</th>
+                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">CID</th>
               </tr>
             </thead>
             <tbody>
@@ -79,7 +85,14 @@ export function SalariesTable({
                   <td className="pr-1 py-3 text-start">{s.contract}</td>
                   <td className="pr-2 py-3 text-start">{s.seniority}</td>
                   <td className="pr-2 py-3 text-start font-bold text-teal-400">{formatCurrency(s.amount, s.currency)}</td>
-                  <td className="pr-2 py-3 text-start text-xs text-gray-400">{new Date(s.createdAt).toLocaleDateString(undefined, { year: "2-digit", month: "short", day: "numeric" })}</td>
+                  <td className="pr-2 py-3 text-start text-xs text-gray-400">{new Date(s.createdAt).toLocaleDateString(undefined, { year: '2-digit', month: 'short', day: 'numeric' })}</td>
+                  <td className="pr-2 py-3 text-start text-xs text-teal-400 max-w-[120px] break-all">
+                    {s.ipfsCid ? (
+                      <a href={`https://ipfs.io/ipfs/${s.ipfsCid}`} target="_blank" rel="noopener noreferrer">{s.ipfsCid}</a>
+                    ) : (
+                      '-'
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>

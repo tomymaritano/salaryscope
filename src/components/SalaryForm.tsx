@@ -16,6 +16,7 @@ type FormData = {
   seniority: string;
   amount: number;
   currency: string;
+  publishToIpfs?: boolean;
 };
 
 // Data
@@ -45,6 +46,7 @@ export default function SalaryForm() {
   const [stackInput, setStackInput] = useState('');
   const [stackSuggestions, setStackSuggestions] = useState<typeof stackOptions>([]);
   const [stackActiveIdx, setStackActiveIdx] = useState(-1);
+  const [publishIpfs, setPublishIpfs] = useState(false);
 
   const [roleInput, setRoleInput] = useState('');
   const [roleSuggestions, setRoleSuggestions] = useState<string[]>([]);
@@ -177,6 +179,7 @@ export default function SalaryForm() {
           ...data,
           role: roleInput,
           stack: cleanStacks,
+          publishToIpfs: publishIpfs,
         }),
         headers: { 'Content-Type': 'application/json' },
       });
@@ -423,6 +426,18 @@ export default function SalaryForm() {
             )}
           </select>
         </Field>
+      </div>
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          id="publishIpfs"
+          checked={publishIpfs}
+          onChange={e => setPublishIpfs(e.target.checked)}
+          className="rounded text-teal-500 focus:ring-teal-400"
+        />
+        <label htmlFor="publishIpfs" className="text-sm text-gray-300">
+          Publicar en IPFS
+        </label>
       </div>
       <button
         type="submit"

@@ -37,6 +37,8 @@ model SalaryEntry {
   seniority  String
   amount     Int
   currency   String
+  ipfsCid    String?  @db.VarChar(64)
+  signature  String?  @db.VarChar(255)
   createdAt  DateTime @default(now())
   source     String   @default("user")
 }

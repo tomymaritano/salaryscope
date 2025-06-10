@@ -10,6 +10,7 @@ export interface Salary {
   amount: number;
   currency: string;
   createdAt: string;
+  ipfsCid?: string | null;
 }
 
 export interface SeniorityDist {

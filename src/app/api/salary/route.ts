@@ -3,8 +3,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 import { isRateLimited } from '@/lib/rateLimiter';
+import { publishToIpfs } from '@/lib/ipfsClient';
 
-const salarySchema = z
+const baseSalarySchema = z
   .object({
     country: z.string().trim(),
     role: z.string().trim(),
@@ -18,6 +19,11 @@ const salarySchema = z
       .transform((v) => v.toUpperCase()),
   })
   .strict();
+
+const salarySchema = baseSalarySchema.extend({
+  publishToIpfs: z.boolean().optional(),
+  signature: z.string().trim().optional(),
+});
 
 export async function POST(req: NextRequest) {
   const ip =
@@ -41,16 +47,22 @@ export async function POST(req: NextRequest) {
     }
 
     const data = parsed.data;
+    const { publishToIpfs, signature, ...entryData } = data;
+
+    let cid: string | null = null;
+    if (publishToIpfs) {
+      try {
+        cid = await publishToIpfs(entryData);
+      } catch (err) {
+        console.error('IPFS publish failed', err);
+      }
+    }
 
     const newEntry = await prisma.salaryEntry.create({
       data: {
-        country: data.country,
-        role: data.role,
-        stack: data.stack,
-        contract: data.contract,
-        seniority: data.seniority,
-        amount: data.amount,
-        currency: data.currency,
+        ...entryData,
+        ipfsCid: cid,
+        signature: signature ?? null,
       },
     });
 

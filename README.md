@@ -35,8 +35,10 @@ SalaryBoard nace para cambiar eso: **la información es tuya, no de una empresa*
 ## 🌎 ¿Cómo funciona?
 
 1. **Consultá:** Navegá los salarios cargados, filtrá por país, stack, rol, seniority y más.
-2. **Cargá tu salario:** Completá el formulario sin registros.  
+2. **Cargá tu salario:** Completá el formulario sin registros.
    _No pedimos mails, ni nombres, ni nada identificable._
+   Si lo deseás, podés publicar el registro en IPFS marcando la opción del
+   formulario.
 3. **Visualizá tendencias:** Promedios, gráficos y comparativas.
 4. **Descargá, hackeá, contribuí:** El código es tuyo. Hacé fork, PR o abrí un issue.
 
@@ -95,7 +97,9 @@ Crea un archivo `.env` con al menos la siguiente variable:
 DATABASE_URL=postgresql://usuario:password@localhost:5432/salaryscope
 ```
 
-Ajusta los valores según tu configuración local o remota.
+Ajusta los valores según tu configuración local o remota. Si deseas publicar
+los registros en IPFS, define también `WEB3_STORAGE_TOKEN` con tu token de
+Web3.Storage.
 
 ## 🧪 Ejecutar pruebas
 
