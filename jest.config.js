@@ -5,4 +5,9 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  coverageThreshold: {
+    global: {
+      lines: 50,
+    },
+  },
 };
