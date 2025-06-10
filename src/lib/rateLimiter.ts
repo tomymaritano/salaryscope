@@ -3,6 +3,18 @@ export type RateLimitInfo = {
   lastRequest: number;
 };
 
+import type { Redis } from 'ioredis';
+
+let redis: Redis | null = null;
+if (process.env.REDIS_URL) {
+  try {
+    const Redis = require('ioredis');
+    redis = new Redis(process.env.REDIS_URL);
+  } catch {
+    console.warn('ioredis not installed, falling back to in-memory store');
+  }
+}
+
 const globalForRateLimiter = globalThis as unknown as {
   rateLimiter?: Map<string, RateLimitInfo>;
 };
@@ -10,14 +22,23 @@ const globalForRateLimiter = globalThis as unknown as {
 const store =
   globalForRateLimiter.rateLimiter ?? new Map<string, RateLimitInfo>();
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   globalForRateLimiter.rateLimiter = store;
 }
 
-const WINDOW = 60_000; // 1 minute
-const LIMIT = 5;
+const WINDOW = parseInt(process.env.RATE_LIMIT_WINDOW || '60000', 10);
+const LIMIT = parseInt(process.env.RATE_LIMIT_LIMIT || '5', 10);
 
-export function isRateLimited(key: string): boolean {
+export async function isRateLimited(key: string): Promise<boolean> {
+  if (redis) {
+    const redisKey = `ratelimit:${key}`;
+    const count = await redis.incr(redisKey);
+    if (count === 1) {
+      await redis.pexpire(redisKey, WINDOW);
+    }
+    return count > LIMIT;
+  }
+
   const now = Date.now();
   const info = store.get(key);
 
