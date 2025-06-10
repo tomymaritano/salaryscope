@@ -87,19 +87,43 @@ npm run dev
 
 Seguí los pasos anteriores para levantar el proyecto en modo desarrollo. Una vez en marcha, visita `http://localhost:3000` para ver la app.
 
+## 🐳 Docker
+
+También podés levantar la app con Docker:
+
+```bash
+docker build -t salaryboard .
+docker run --env-file .env -p 3000:3000 salaryboard
+```
+
+Si contás con **Docker Compose**, basta con:
+
+```bash
+docker compose up --build
+```
+
 ## 🔧 Variables de entorno
 
-Crea un archivo `.env` con al menos la siguiente variable:
+Crea un archivo `.env` con las siguientes variables básicas:
 
 ```
 DATABASE_URL=postgresql://usuario:password@localhost:5432/salaryscope
+# Opcional: habilitar rate limit con Upstash
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+RATE_LIMIT_WINDOW=60
+RATE_LIMIT_LIMIT=5
 ```
 
 Ajusta los valores según tu configuración local o remota.
 
 ## 🧪 Ejecutar pruebas
 
-El proyecto no cuenta aún con una suite de tests automatizados. Puedes ejecutar `npm run lint` para revisar el código y asegurarte de que la base de datos esté configurada correctamente con `npx prisma generate`.
+El proyecto incluye pruebas unitarias con **Jest** y Testing Library.
+
+```bash
+npm test
+```
 
 ## 🙌 Contribuir
 

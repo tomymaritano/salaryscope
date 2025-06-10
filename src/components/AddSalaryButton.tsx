@@ -1,9 +1,13 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { UploadCloud } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 // (No te olvides del shimmer del ejemplo anterior en el CSS global)
 
 export function AddSalaryButton({ onClick }: { onClick: () => void }) {
+  const t = useTranslations('AddSalaryButton');
   return (
     <motion.button
       onClick={onClick}
@@ -61,7 +65,7 @@ export function AddSalaryButton({ onClick }: { onClick: () => void }) {
 
       <UploadCloud size={26} className="text-white drop-shadow-sm md:text-white" />
       <span className="relative z-20 drop-shadow text-base md:text-sm font-bold">
-        push salary
+        {t('label')}
       </span>
     </motion.button>
   );
