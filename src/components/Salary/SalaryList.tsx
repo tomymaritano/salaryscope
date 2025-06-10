@@ -5,6 +5,7 @@ import { FiltersBar } from "./FiltersBar";
 import { SalariesTable } from "./SalariesTable";
 import { ChartTabs } from "./ChartTabs";
 import { Salary } from "./types";
+import { useTranslations } from "next-intl";
 
 const SENIORITIES = ["Junior", "Mid", "Senior", "Lead"];
 
@@ -26,6 +27,7 @@ export function SalaryList() {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const t = useTranslations();
 
   // Filtros
   const [country, setCountry] = useState("");
@@ -49,12 +51,12 @@ export function SalaryList() {
       try {
         setLoading(true);
         const res = await fetch(`/api/salaries?page=${page}&pageSize=${pageSize}`);
-        if (!res.ok) throw new Error("No se pudo obtener los salarios");
+        if (!res.ok) throw new Error(t('messages.error'));
         const data = await res.json();
         setSalaries(data.salaries);
         setTotal(data.total);
       } catch {
-        setError("Error desconocido");
+        setError(t('messages.error'));
       } finally {
         setLoading(false);
       }
@@ -131,9 +133,9 @@ export function SalaryList() {
   }, [filtered]);
 
   // --- UI ---
-  if (loading) return <p className="text-center text-gray-400">Cargando...</p>;
+  if (loading) return <p className="text-center text-gray-400">{t('messages.loading')}</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
-  if (salaries.length === 0) return <p className="text-center text-gray-400">No hay salarios aún.</p>;
+  if (salaries.length === 0) return <p className="text-center text-gray-400">{t('messages.noData')}</p>;
 
   return (
     <section className="font-sans space-y-10 px-2 sm:px-4 md:px-0">
@@ -153,7 +155,7 @@ export function SalaryList() {
                 {filtered.length}
               </motion.span>
               <span className="text-[13px] md:text-sm uppercase text-gray-500 font-semibold tracking-wide mt-1">
-                Registros
+                {t('messages.records')}
               </span>
             </div>
             {/* Promedio */}
@@ -168,7 +170,7 @@ export function SalaryList() {
                 {formatCurrency(avgAmount, topCurrency)}
               </motion.span>
               <span className="text-xl md:text-sm uppercase text-gray-500 font-semibold tracking-wide mt-1">
-                Promedio
+                {t('stats.avg')}
               </span>
             </div>
           </div>

@@ -1,13 +1,16 @@
 import { motion } from "framer-motion";
 import { UploadCloud } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 // (No te olvides del shimmer del ejemplo anterior en el CSS global)
 
 export function AddSalaryButton({ onClick }: { onClick: () => void }) {
+  const t = useTranslations("buttons");
   return (
     <motion.button
       onClick={onClick}
       type="button"
+      aria-label={t("addSalary")}
       className={`
         group relative flex items-center justify-center gap-3
         w-full md:w-auto
@@ -61,7 +64,7 @@ export function AddSalaryButton({ onClick }: { onClick: () => void }) {
 
       <UploadCloud size={26} className="text-white drop-shadow-sm md:text-white" />
       <span className="relative z-20 drop-shadow text-base md:text-sm font-bold">
-        push salary
+        {t("addSalary")}
       </span>
     </motion.button>
   );

@@ -1,5 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { AddSalaryButton } from '../AddSalaryButton';
+import { NextIntlProvider } from 'next-intl';
+import messages from '../../i18n/en.json';
 
 describe('AddSalaryButton', () => {
   it('calls onClick when clicked', () => {
@@ -11,7 +13,11 @@ describe('AddSalaryButton', () => {
   });
 
   it('renders button text', () => {
-    render(<AddSalaryButton onClick={() => {}} />);
-    expect(screen.getByText(/push salary/i)).toBeInTheDocument();
+    render(
+      <NextIntlProvider messages={messages} locale="en">
+        <AddSalaryButton onClick={() => {}} />
+      </NextIntlProvider>
+    );
+    expect(screen.getByText(messages.buttons.addSalary)).toBeInTheDocument();
   });
 });

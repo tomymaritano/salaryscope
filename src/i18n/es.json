@@ -1,0 +1,47 @@
+{
+  "buttons": {
+    "addSalary": "push salary",
+    "viewData": "query salarios"
+  },
+  "hero": {
+    "noDrama": "No login, no drama. Solo data, directo de devs reales."
+  },
+  "openData": {
+    "heading": "$ open data",
+    "description": "Consultá salarios, filtrá por país, rol o seniority y mirá tendencias reales del mercado."
+  },
+  "modal": {
+    "title": "Ingresá tu salario",
+    "tip": "Tip: <kbd>Ctrl+K</kbd> para buscar roles rápido."
+  },
+  "stats": {
+    "loaded": "Salarios cargados",
+    "avg": "Salario promedio",
+    "noStats": "No hay stats"
+  },
+  "messages": {
+    "loading": "Cargando...",
+    "noData": "No hay salarios aún.",
+    "error": "Error desconocido",
+    "records": "Registros"
+  },
+  "charts": {
+    "avgByRole": "Promedio salarial por Rol",
+    "avgByCountry": "Promedio salarial por País",
+    "seniorityDist": "Distribución de seniorities",
+    "selectCurrency": "Seleccioná una moneda para ver los promedios salariales.",
+    "noData": "No hay datos para mostrar.",
+    "noSeniority": "No hay datos de seniority."
+  },
+  "table": {
+    "country": "País",
+    "role": "Rol",
+    "stack": "Stack",
+    "contract": "Contrato",
+    "seniority": "Seniority",
+    "salary": "Salario",
+    "date": "Fecha",
+    "prev": "Anterior",
+    "next": "Siguiente"
+  }
+}

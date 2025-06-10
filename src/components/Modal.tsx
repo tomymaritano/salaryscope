@@ -28,6 +28,8 @@ export function Modal({ open, onClose, children }: ModalProps) {
       ref={ref}
       className="fixed inset-0 z-50 bg-black/90 backdrop-blur flex items-center justify-center"
       onMouseDown={handleBackdrop}
+      role="dialog"
+      aria-modal="true"
     >
       <div className="relative w-full max-w-2xl p-0 m-4">
         {/* Cerrar */}
