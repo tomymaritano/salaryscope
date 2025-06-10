@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { roles, stacks } from '@/lib/data/rolesAndStacks';
 import { countries } from '@/lib/data/countries';
 import { currencies } from '@/lib/data/currencies';
+import { useToast } from '@/hooks/useToast';
 
 type FormData = {
   country: string;
@@ -52,6 +53,7 @@ export default function SalaryForm() {
 
   const stackInputRef = useRef<HTMLInputElement>(null);
   const inputRoleRef = useRef<HTMLInputElement>(null);
+  const { showToast, Toast } = useToast();
 
   // --- Stack logic: autocomplete, key nav, add/create tag ---
   useEffect(() => {
@@ -168,29 +170,38 @@ export default function SalaryForm() {
       })
       .filter(Boolean);
 
-    const res = await fetch('/api/salary', {
-      method: 'POST',
-      body: JSON.stringify({
-        ...data,
-        role: roleInput,
-        stack: cleanStacks,
-      }),
-      headers: { 'Content-Type': 'application/json' },
-    });
-    setStatus(res.ok ? 'success' : 'error');
-    if (res.ok) {
+    try {
+      const res = await fetch('/api/salary', {
+        method: 'POST',
+        body: JSON.stringify({
+          ...data,
+          role: roleInput,
+          stack: cleanStacks,
+        }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (!res.ok) throw new Error('Request failed');
+
+      setStatus('success');
       reset();
       setRoleInput('');
       setSelectedStacks([]);
       setStackInput('');
+    } catch (err) {
+      setStatus('error');
+      showToast('Error enviando salario', 'error');
+      scrollToError();
+    } finally {
+      setTimeout(() => setStatus(''), 3200);
     }
-    setTimeout(() => setStatus(''), 3200);
-    if (!res.ok) scrollToError();
   };
 
   // --- Main form ---
   return (
-    <motion.form
+    <>
+      <Toast />
+      <motion.form
       onSubmit={handleSubmit(onSubmit)}
       className="w-full max-w-2xl mx-auto space-y-8 rounded-none p-8 backdrop-blur-xl bg-[#19191c]/80 border border-[#232326] transition"
       autoComplete="off"
@@ -428,6 +439,7 @@ export default function SalaryForm() {
         ) : 'Enviar salario'}
       </button>
     </motion.form>
+    </>
   );
 }
 
