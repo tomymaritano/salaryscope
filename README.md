@@ -75,3 +75,14 @@ npx prisma migrate dev --name init
 
 # 5. Iniciá la app
 npm run dev
+```
+
+Abrí <http://localhost:3000> en tu navegador para verificar que todo funcione.
+
+## Observaciones y mejoras pendientes
+
+- Eliminar rutas de depuración o protegerlas con autenticación.
+- Crear archivo `.env.example` con las variables requeridas.
+- Agregar configuración de Tailwind (`tailwind.config.ts`).
+- Validar y limitar las peticiones a la API.
+- Incluir tests y flujo de CI para lint y pruebas.
