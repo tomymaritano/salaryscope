@@ -23,6 +23,7 @@ function formatCurrency(amount: number, currency: string) {
 
 export function SalaryList() {
   const [salaries, setSalaries] = useState<Salary[]>([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -46,10 +47,12 @@ export function SalaryList() {
   useEffect(() => {
     async function fetchSalaries() {
       try {
-        const res = await fetch("/api/salaries");
+        setLoading(true);
+        const res = await fetch(`/api/salaries?page=${page}&pageSize=${pageSize}`);
         if (!res.ok) throw new Error("No se pudo obtener los salarios");
         const data = await res.json();
-        setSalaries(data);
+        setSalaries(data.salaries);
+        setTotal(data.total);
       } catch {
         setError("Error desconocido");
       } finally {
@@ -57,7 +60,7 @@ export function SalaryList() {
       }
     }
     fetchSalaries();
-  }, []);
+  }, [page]);
 
   // --- Logic ---
   const filtered = useMemo(() => {
@@ -69,8 +72,8 @@ export function SalaryList() {
     );
   }, [salaries, country, role, seniority, currency]);
 
-  const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
-  const paged = filtered.slice((page - 1) * pageSize, page * pageSize);
+  const pageCount = Math.max(1, Math.ceil(total / pageSize));
+  const paged = filtered;
   const uniqueCountries = useMemo(() => Array.from(new Set(salaries.map(s => s.country))).sort(), [salaries]);
   const uniqueRoles = useMemo(() => Array.from(new Set(salaries.map(s => s.role))).sort(), [salaries]);
   const uniqueCurrencies = useMemo(() => Array.from(new Set(salaries.map(s => s.currency))).sort(), [salaries]);
