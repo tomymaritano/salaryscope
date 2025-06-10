@@ -53,5 +53,9 @@
     "@testing-library/jest-dom": "^6.1.0",
     "@testing-library/user-event": "^14.4.3",
     "prettier": "^3.2.5"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": ["prettier --write", "eslint --fix"],
+    "*.{md,css,scss}": ["prettier --write"]
   }
 }
