@@ -5,6 +5,12 @@
 
 ---
 
+## 🇬🇧 About SalaryBoard
+
+**SalaryBoard** is an open-source platform where tech workers can share and view salaries anonymously. Browse by country, role or seniority and contribute your own data without sign ups.
+
+---
+
 ## 🚀 ¿Qué es SalaryBoard?
 
 **SalaryBoard** es una plataforma open-source para consultar y compartir salarios del sector tech.  
