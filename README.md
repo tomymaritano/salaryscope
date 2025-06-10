@@ -83,29 +83,24 @@ npx prisma migrate dev --name init
 npm run dev
 ```
 
-Abrí <http://localhost:3000> en tu navegador para verificar que todo funcione.
+## 📋 Uso
 
-## ✅ Tests
+Seguí los pasos anteriores para levantar el proyecto en modo desarrollo. Una vez en marcha, visita `http://localhost:3000` para ver la app.
 
-Para ejecutar la suite de pruebas:
+## 🔧 Variables de entorno
 
-```bash
-npm test
+Crea un archivo `.env` con al menos la siguiente variable:
+
+```
+DATABASE_URL=postgresql://usuario:password@localhost:5432/salaryscope
 ```
 
-## Commands
+Ajusta los valores según tu configuración local o remota.
 
-- `npm run dev` – entorno de desarrollo
-- `npm run build` – compilar la aplicación
-- `npm start` – iniciar la versión compilada
-- `npm test` – correr tests
-- `npm run lint` – ejecutar ESLint
-- `npm run format` – formatear con Prettier
+## 🧪 Ejecutar pruebas
 
-## Observaciones y mejoras pendientes
+El proyecto no cuenta aún con una suite de tests automatizados. Puedes ejecutar `npm run lint` para revisar el código y asegurarte de que la base de datos esté configurada correctamente con `npx prisma generate`.
 
-- Eliminar rutas de depuración o protegerlas con autenticación.
-- Crear archivo `.env.example` con las variables requeridas. ✅
-- Agregar configuración de Tailwind (`tailwind.config.ts`). ✅
-- Validar y limitar las peticiones a la API.
-- Incluir tests y flujo de CI para lint y pruebas.
+## 🙌 Contribuir
+
+Los pull requests son bienvenidos. Abre un issue para reportar errores o proponer mejoras.
