@@ -97,6 +97,15 @@ DATABASE_URL=postgresql://usuario:password@localhost:5432/salaryscope
 
 Ajusta los valores según tu configuración local o remota.
 
+Para habilitar el limitador de tasa opcional define también:
+
+```
+UPSTASH_REDIS_REST_URL=https://<id>.upstash.io
+UPSTASH_REDIS_REST_TOKEN=<token>
+RATE_LIMIT_WINDOW=60
+RATE_LIMIT_LIMIT=5
+```
+
 ## 🧪 Ejecutar pruebas
 
 El proyecto no cuenta aún con una suite de tests automatizados. Puedes ejecutar `npm run lint` para revisar el código y asegurarte de que la base de datos esté configurada correctamente con `npx prisma generate`.
