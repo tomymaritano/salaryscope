@@ -8,6 +8,10 @@ jest.mock('@/lib/prisma', () => ({
   },
 }));
 
+jest.mock('@/lib/rateLimiter', () => ({
+  isRateLimited: jest.fn(async () => false),
+}));
+
 describe('POST /api/salary', () => {
   it('returns 400 when required fields are missing', async () => {
     const req = { json: async () => ({}) } as any;
@@ -34,3 +38,4 @@ describe('POST /api/salary', () => {
     expect(body.country).toBe('AR');
   });
 });
+

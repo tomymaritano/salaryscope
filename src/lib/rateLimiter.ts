@@ -1,39 +1,45 @@
-export type RateLimitInfo = {
-  count: number;
-  lastRequest: number;
-};
+const URL = process.env.UPSTASH_REDIS_REST_URL;
+const TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
 
-const globalForRateLimiter = globalThis as unknown as {
-  rateLimiter?: Map<string, RateLimitInfo>;
-};
-
-const store =
-  globalForRateLimiter.rateLimiter ?? new Map<string, RateLimitInfo>();
-
-if (process.env.NODE_ENV !== "production") {
-  globalForRateLimiter.rateLimiter = store;
-}
-
-const WINDOW = 60_000; // 1 minute
+const WINDOW = 60; // seconds
 const LIMIT = 5;
 
-export function isRateLimited(key: string): boolean {
-  const now = Date.now();
-  const info = store.get(key);
-
-  if (!info) {
-    store.set(key, { count: 1, lastRequest: now });
-    return false;
+async function incr(key: string): Promise<number> {
+  if (!URL || !TOKEN) {
+    return 0;
   }
 
-  if (now - info.lastRequest > WINDOW) {
-    store.set(key, { count: 1, lastRequest: now });
-    return false;
+  const res = await fetch(`${URL}/incr/${key}`, {
+    headers: { Authorization: `Bearer ${TOKEN}` },
+    cache: 'no-store',
+  });
+
+  if (!res.ok) {
+    console.error('Rate limit error', await res.text());
+    return 0;
   }
 
-  info.count += 1;
-  info.lastRequest = now;
-  store.set(key, info);
+  const data = (await res.json()) as { result: number };
+  return data.result;
+}
 
-  return info.count > LIMIT;
+async function expire(key: string) {
+  if (!URL || !TOKEN) return;
+  await fetch(`${URL}/expire/${key}/${WINDOW}`, {
+    headers: { Authorization: `Bearer ${TOKEN}` },
+    cache: 'no-store',
+  });
+}
+
+export async function isRateLimited(key: string): Promise<boolean> {
+  try {
+    const count = await incr(key);
+    if (count === 1) {
+      await expire(key);
+    }
+    return count > LIMIT;
+  } catch (err) {
+    console.error('Rate limit check failed', err);
+    return false;
+  }
 }
