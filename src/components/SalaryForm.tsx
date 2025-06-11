@@ -188,7 +188,7 @@ export default function SalaryForm() {
       setRoleInput('');
       setSelectedStacks([]);
       setStackInput('');
-    } catch (err) {
+    } catch {
       setStatus('error');
       showToast('Error enviando salario', 'error');
       scrollToError();
