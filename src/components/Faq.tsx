@@ -44,7 +44,7 @@ const faqs = [
     question: "¿Cómo está construido?",
     answer: (
       <>
-        Con <span className="font-bold text-teal-200">Next.js 14</span>, <span className="font-bold text-teal-200">React</span>, <span className="font-bold text-teal-200">Tailwind CSS</span> y <span className="font-bold text-teal-200">Prisma/PostgreSQL</span>.  
+        Con <span className="font-bold text-teal-200">Next.js 15</span>, <span className="font-bold text-teal-200">React</span>, <span className="font-bold text-teal-200">Tailwind CSS</span> y <span className="font-bold text-teal-200">Prisma/PostgreSQL</span>.
         El diseño: **minimalista, mobile-first y con glassmorphism** porque nos gusta lo simple y moderno.  
         <br />
         <span className="text-xs text-gray-400">Deploy directo en Vercel. Repo abierto para que chusmees o hackees.</span>

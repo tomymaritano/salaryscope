@@ -44,7 +44,7 @@ SalaryBoard nace para cambiar eso: **la información es tuya, no de una empresa*
 
 ## 🛠️ Stack tecnológico
 
-- **Frontend:** [Next.js 14](https://nextjs.org/), [React](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/), Framer Motion.
+ - **Frontend:** [Next.js 15](https://nextjs.org/), [React](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/), Framer Motion.
 - **Backend:** [Prisma ORM](https://prisma.io/), [PostgreSQL](https://www.postgresql.org/).
 - **Infra:** Deploy automático en [Vercel](https://vercel.com/) (también dockerizable).
 - **Diseño:** Minimalista, mobile-first, glassmorphism sutil.
