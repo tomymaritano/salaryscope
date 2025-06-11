@@ -1,44 +1,20 @@
 // app/api/salaries/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { z } from 'zod';
+import { listSalaries, ServiceError } from '@/lib/salaryService';
 
 export async function GET(req: NextRequest) {
   try {
-    const querySchema = z.object({
-      page: z.preprocess(
-        (v) => (v === null || v === undefined ? 1 : parseInt(String(v), 10)),
-        z.number().int().positive()
-      ),
-      pageSize: z.preprocess(
-        (v) => (v === null || v === undefined ? 10 : parseInt(String(v), 10)),
-        z.number().int().positive().max(100)
-      ),
-    });
-
-    const parsed = querySchema.safeParse({
+    const data = await listSalaries({
       page: req.nextUrl.searchParams.get('page'),
       pageSize: req.nextUrl.searchParams.get('pageSize'),
     });
 
-    if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid pagination parameters' }, { status: 400 });
+    return NextResponse.json(data, { status: 200 });
+  } catch (e) {
+    if (e instanceof ServiceError) {
+      return NextResponse.json({ error: e.message }, { status: e.status });
     }
 
-    const { page, pageSize } = parsed.data;
-    const skip = (page - 1) * pageSize;
-
-    const [total, salaries] = await Promise.all([
-      prisma.salaryEntry.count(),
-      prisma.salaryEntry.findMany({
-        orderBy: { createdAt: 'desc' },
-        take: pageSize,
-        skip,
-      }),
-    ]);
-
-    return NextResponse.json({ salaries, total }, { status: 200 });
-  } catch (e) {
     console.error(e);
     return NextResponse.json(
       { error: 'Error fetching salary entries' },
