@@ -1,6 +1,9 @@
 // app/api/salaries/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { listSalaries, ServiceError } from '@/lib/salaryService';
+import {
+  listSalaries,
+  ServiceError,
+} from '@/features/salaries/services/salaryService';
 
 export async function GET(req: NextRequest) {
   try {

@@ -50,6 +50,10 @@ SalaryBoard nace para cambiar eso: **la información es tuya, no de una empresa*
 - **Diseño:** Minimalista, mobile-first, glassmorphism sutil.
 - **Animaciones:** Framer Motion.
 
+## 🗂️ Estructura
+
+El código está organizado por _features_. Por ejemplo, toda la lógica de salarios vive en `src/features/salaries` con sus componentes, hooks, servicios y repositorios.
+
 ---
 
 ## 🕶️ Características
@@ -99,7 +103,7 @@ Ajusta los valores según tu configuración local o remota.
 
 ## 🧪 Ejecutar pruebas
 
-El proyecto no cuenta aún con una suite de tests automatizados. Puedes ejecutar `npm run lint` para revisar el código y asegurarte de que la base de datos esté configurada correctamente con `npx prisma generate`.
+La aplicación incluye pruebas unitarias para servicios y algunos componentes. Ejecuta `npm test` junto con `npm run lint` antes de enviar un PR. Recuerda generar los clientes de Prisma con `npx prisma generate`.
 
 ## 🙌 Contribuir
 

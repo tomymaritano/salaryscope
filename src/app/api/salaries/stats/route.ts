@@ -1,6 +1,6 @@
 // app/api/salaries/stats/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { getSalaryStats } from '@/lib/salaryService';
+import { getSalaryStats } from '@/features/salaries/services/salaryService';
 
 export async function GET(req: NextRequest) {
   try {

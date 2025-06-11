@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SalaryForm from "@/components/SalaryForm";
-import { SalaryList } from "@/components/Salary/SalaryList";
+import { SalaryList } from "@/features/salaries/components/Salary/SalaryList";
 import { Modal } from "@/components/Modal";
 import Squares from "@/components/Squares/Squares";
 import Faq from "@/components/Faq";

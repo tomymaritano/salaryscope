@@ -6,7 +6,7 @@ import BlurText from "@/components/BlurText/BlurText";
 import { TypingGradientText } from "@/components/TypingGradient";
 import { AddSalaryButton } from "@/components/AddSalaryButton";
 import { StatsRow } from "./StatsRow";
-import useSalaryStats from "@/hooks/useSalaryStats";
+import useSalaryStats from "@/features/salaries/hooks/useSalaryStats";
 import { ViewDataButton } from "./ViewDataButton";
 
 export default function Hero({ onAddSalary }: { onAddSalary: () => void }) {

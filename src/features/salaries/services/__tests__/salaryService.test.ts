@@ -2,19 +2,12 @@ import {
   createSalaryEntry,
   listSalaries,
   getSalaryStats,
-} from './salaryService';
-import { prisma } from '@/lib/prisma';
+} from '../salaryService';
 import { isRateLimited } from '@/lib/rateLimiter';
+import * as repository from '../../repositories/salaryRepository';
 
-jest.mock('@/lib/prisma', () => ({
-  prisma: {
-    salaryEntry: {
-      create: jest.fn(),
-      count: jest.fn(),
-      findMany: jest.fn(),
-    },
-  },
-}));
+
+jest.mock('../../repositories/salaryRepository');
 
 jest.mock('@/lib/rateLimiter', () => ({
   isRateLimited: jest.fn(),
@@ -41,7 +34,7 @@ describe('salaryService', () => {
 
     it('creates entry when valid', async () => {
       (isRateLimited as jest.Mock).mockResolvedValue(false);
-      (prisma.salaryEntry.create as jest.Mock).mockResolvedValue({
+      (repository.createSalary as jest.Mock).mockResolvedValue({
         id: '1',
         country: 'AR',
       });
@@ -57,25 +50,21 @@ describe('salaryService', () => {
       };
 
       const res = await createSalaryEntry(data, 'ip');
-      expect(prisma.salaryEntry.create).toHaveBeenCalled();
+      expect(repository.createSalary).toHaveBeenCalled();
       expect(res.id).toBe('1');
     });
   });
 
   describe('listSalaries', () => {
     it('returns paginated results', async () => {
-      (prisma.salaryEntry.count as jest.Mock).mockResolvedValue(5);
-      (prisma.salaryEntry.findMany as jest.Mock).mockResolvedValue([
+      (repository.countSalaries as jest.Mock).mockResolvedValue(5);
+      (repository.listSalaryEntries as jest.Mock).mockResolvedValue([
         { id: '3' },
         { id: '2' },
       ]);
 
       const res = await listSalaries({ page: '2', pageSize: '2' });
-      expect(prisma.salaryEntry.findMany).toHaveBeenCalledWith({
-        orderBy: { createdAt: 'desc' },
-        take: 2,
-        skip: 2,
-      });
+      expect(repository.listSalaryEntries).toHaveBeenCalledWith(2, 2);
       expect(res.total).toBe(5);
       expect(res.salaries).toHaveLength(2);
     });
@@ -89,21 +78,18 @@ describe('salaryService', () => {
 
   describe('getSalaryStats', () => {
     it('returns zeros when no salaries', async () => {
-      (prisma.salaryEntry.findMany as jest.Mock).mockResolvedValue([]);
+      (repository.listAmountsByCurrency as jest.Mock).mockResolvedValue([]);
       const res = await getSalaryStats('EUR');
       expect(res).toEqual({ total: 0, avg: 0, currency: 'EUR' });
     });
 
     it('calculates stats', async () => {
-      (prisma.salaryEntry.findMany as jest.Mock).mockResolvedValue([
+      (repository.listAmountsByCurrency as jest.Mock).mockResolvedValue([
         { amount: 50 },
         { amount: 100 },
       ]);
       const res = await getSalaryStats('usd');
-      expect(prisma.salaryEntry.findMany).toHaveBeenCalledWith({
-        where: { currency: 'USD' },
-        select: { amount: true },
-      });
+      expect(repository.listAmountsByCurrency).toHaveBeenCalledWith('USD');
       expect(res.total).toBe(2);
       expect(res.avg).toBe(75);
       expect(res.currency).toBe('USD');

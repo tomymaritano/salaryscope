@@ -1,6 +1,11 @@
 import { z } from 'zod';
-import { prisma } from './prisma';
-import { isRateLimited } from './rateLimiter';
+import { isRateLimited } from '@/lib/rateLimiter';
+import {
+  createSalary,
+  countSalaries,
+  listSalaryEntries,
+  listAmountsByCurrency,
+} from '../repositories/salaryRepository';
 
 export class ServiceError extends Error {
   status: number;
@@ -38,9 +43,7 @@ export async function createSalaryEntry(payload: unknown, ip: string) {
     throw new ServiceError('Invalid data', 400, parsed.error.flatten());
   }
 
-  return prisma.salaryEntry.create({
-    data: parsed.data,
-  });
+  return createSalary(parsed.data);
 }
 
 const listQuerySchema = z.object({
@@ -69,12 +72,8 @@ export async function listSalaries(params: ListParams) {
   const skip = (page - 1) * pageSize;
 
   const [total, salaries] = await Promise.all([
-    prisma.salaryEntry.count(),
-    prisma.salaryEntry.findMany({
-      orderBy: { createdAt: 'desc' },
-      take: pageSize,
-      skip,
-    }),
+    countSalaries(),
+    listSalaryEntries(skip, pageSize),
   ]);
 
   return { salaries, total };
@@ -83,10 +82,7 @@ export async function listSalaries(params: ListParams) {
 export async function getSalaryStats(currency?: string) {
   const cur = (currency || 'USD').toUpperCase();
 
-  const salaries: { amount: number }[] = await prisma.salaryEntry.findMany({
-    where: { currency: cur },
-    select: { amount: true },
-  });
+  const salaries = await listAmountsByCurrency(cur);
 
   if (!salaries.length) {
     return { total: 0, avg: 0, currency: cur };

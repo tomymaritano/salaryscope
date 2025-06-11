@@ -1,6 +1,9 @@
 // app/api/salary/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { createSalaryEntry, ServiceError } from '@/lib/salaryService';
+import {
+  createSalaryEntry,
+  ServiceError,
+} from '@/features/salaries/services/salaryService';
 
 export async function POST(req: NextRequest) {
   const ip =
