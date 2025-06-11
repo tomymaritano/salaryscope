@@ -1,5 +1,5 @@
 // components/Salary/SalariesTable.tsx
-import { Salary } from "./types";
+import { Salary } from './types';
 
 interface SalariesTableProps {
   paged: Salary[];
@@ -18,11 +18,12 @@ export function SalariesTable({
 }: SalariesTableProps) {
   return (
     <div className="w-full">
-
       {/* Mobile: Cards */}
       <div className="md:hidden flex flex-col gap-3 mt-2">
         {paged.length === 0 && (
-          <div className="text-center text-gray-400 text-base py-6">No hay salarios aún.</div>
+          <div className="text-center text-gray-400 text-base py-6">
+            No hay salarios aún.
+          </div>
         )}
         {paged.map((s) => (
           <div
@@ -31,18 +32,26 @@ export function SalariesTable({
                       flex flex-col gap-2 glass-card"
           >
             <div className="flex justify-between items-center mb-1">
-              <span className="font-bold text-teal-300 text-base">{s.country}</span>
-              <span className="font-black text-lg text-teal-400">{formatCurrency(s.amount, s.currency)}</span>
+              <span className="font-bold text-teal-300 text-base">
+                {s.country}
+              </span>
+              <span className="font-black text-lg text-teal-400">
+                {formatCurrency(s.amount, s.currency)}
+              </span>
             </div>
             <div className="flex items-center gap-2 text-sm">
               <span className="font-semibold text-white">{s.role}</span>
-              <span className="text-xs text-gray-400 bg-white/5 rounded px-2 py-0.5 ml-2">{s.seniority}</span>
+              <span className="text-xs text-gray-400 bg-white/5 rounded px-2 py-0.5 ml-2">
+                {s.seniority}
+              </span>
             </div>
             <div className="text-xs text-gray-400 flex gap-4 mt-1">
               <span>{s.contract}</span>
-              <span>{s.stack.slice(0, 2).join(", ")}</span>
+              <span>{s.stack.slice(0, 2).join(', ')}</span>
             </div>
-            <div className="text-[11px] text-gray-500 mt-2">{new Date(s.createdAt).toLocaleDateString()}</div>
+            <div className="text-[11px] text-gray-500 mt-2">
+              {new Date(s.createdAt).toLocaleDateString()}
+            </div>
           </div>
         ))}
       </div>
@@ -50,16 +59,30 @@ export function SalariesTable({
       {/* Desktop: Tabla */}
       <div className="hidden md:block relative mt-3">
         <div className="overflow-x-auto rounded-2xl shadow-lg glass-card">
-          <table className="min-w-full text-sm font-normal backdrop-blur-2xl bg-black/80 border-separate border-spacing-0">
+          <table className="min-w-full text-sm font-normal backdrop-blur-2xl  border-separate border-spacing-0">
             <thead>
-              <tr className="sticky items-start top-0 z-20 bg-black/80 backdrop-blur-xl border-b border-white/10">
-                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">País</th>
-                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">Rol</th>
-                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">Stack</th>
-                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">Contrato</th>
-                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">Seniority</th>
-                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">Salario</th>
-                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">Fecha</th>
+              <tr className="sticky items-start top-0 z-20  backdrop-blur-xl border-b border-white/10">
+                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">
+                  País
+                </th>
+                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">
+                  Rol
+                </th>
+                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">
+                  Stack
+                </th>
+                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">
+                  Contrato
+                </th>
+                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">
+                  Seniority
+                </th>
+                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">
+                  Salario
+                </th>
+                <th className="px-auto text-start py-3 text-xs text-gray-300 font-bold">
+                  Fecha
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -69,17 +92,27 @@ export function SalariesTable({
                   className={`
                     border-b border-white/5
                     transition-all duration-150
-                    ${idx % 2 === 0 ? "bg-black/90" : "bg-teal-950/30"}
+                    ${idx % 2 === 0 ? 'bg-black/90' : 'bg-teal-950/30'}
                     hover:bg-teal-800/20 hover:scale-[1.01]
                   `}
                 >
                   <td className="pr-4 py-3 text-start">{s.country}</td>
                   <td className="pr-0 py-3 text-start">{s.role}</td>
-                  <td className="pr-6 py-3 text-start max-w-[180px] truncate text-gray-400">{s.stack.join(", ")}</td>
+                  <td className="pr-6 py-3 text-start max-w-[180px] truncate text-gray-400">
+                    {s.stack.join(', ')}
+                  </td>
                   <td className="pr-1 py-3 text-start">{s.contract}</td>
                   <td className="pr-2 py-3 text-start">{s.seniority}</td>
-                  <td className="pr-2 py-3 text-start font-bold text-teal-400">{formatCurrency(s.amount, s.currency)}</td>
-                  <td className="pr-2 py-3 text-start text-xs text-gray-400">{new Date(s.createdAt).toLocaleDateString(undefined, { year: "2-digit", month: "short", day: "numeric" })}</td>
+                  <td className="pr-2 py-3 text-start font-bold text-teal-400">
+                    {formatCurrency(s.amount, s.currency)}
+                  </td>
+                  <td className="pr-2 py-3 text-start text-xs text-gray-400">
+                    {new Date(s.createdAt).toLocaleDateString(undefined, {
+                      year: '2-digit',
+                      month: 'short',
+                      day: 'numeric',
+                    })}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -90,9 +123,23 @@ export function SalariesTable({
       {/* Pagination (compartida) */}
       {pageCount > 1 && (
         <div className="flex justify-center items-center gap-2 py-5">
-          <button disabled={page === 1} onClick={() => setPage(page - 1)} className="px-3 py-1 rounded-none bg-[#18181b] text-gray-400 border border-white/10 hover:text-white hover:border-teal-400 disabled:opacity-50 text-xs font-semibold transition">Anterior</button>
-          <span className="text-xs px-2">{page}/{pageCount}</span>
-          <button disabled={page === pageCount} onClick={() => setPage(page + 1)} className="px-3 py-1 rounded-none bg-[#18181b] text-gray-400 border border-white/10 hover:text-white hover:border-teal-400 disabled:opacity-50 text-xs font-semibold transition">Siguiente</button>
+          <button
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+            className="px-3 py-1 rounded-none bg-[#18181b] text-gray-400 border border-white/10 hover:text-white hover:border-teal-400 disabled:opacity-50 text-xs font-semibold transition"
+          >
+            Anterior
+          </button>
+          <span className="text-xs px-2">
+            {page}/{pageCount}
+          </span>
+          <button
+            disabled={page === pageCount}
+            onClick={() => setPage(page + 1)}
+            className="px-3 py-1 rounded-none bg-[#18181b] text-gray-400 border border-white/10 hover:text-white hover:border-teal-400 disabled:opacity-50 text-xs font-semibold transition"
+          >
+            Siguiente
+          </button>
         </div>
       )}
     </div>

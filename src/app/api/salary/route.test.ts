@@ -14,7 +14,9 @@ jest.mock('@/lib/rateLimiter', () => ({
 
 describe('POST /api/salary', () => {
   it('returns 400 when required fields are missing', async () => {
-    const req = { json: async () => ({}) } as any;
+    const req = {
+      json: async () => ({}),
+    } as unknown as import('next/server').NextRequest;
     const res = await POST(req);
     expect(res.status).toBe(400);
     const body = await res.json();
@@ -31,11 +33,12 @@ describe('POST /api/salary', () => {
       amount: 100,
       currency: 'USD',
     };
-    const req = { json: async () => data } as any;
+    const req = {
+      json: async () => data,
+    } as unknown as import('next/server').NextRequest;
     const res = await POST(req);
     expect(res.status).toBe(201);
     const body = await res.json();
     expect(body.country).toBe('AR');
   });
 });
-
