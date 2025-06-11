@@ -1,8 +1,10 @@
 const URL = process.env.UPSTASH_REDIS_REST_URL;
 const TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
 
-const WINDOW = 60; // seconds
-const LIMIT = 5;
+// Window duration and request limit for the rate limiter.
+// Values are read from environment variables and fall back to sensible defaults.
+const WINDOW = Number(process.env.RATE_LIMIT_WINDOW ?? '60'); // seconds
+const LIMIT = Number(process.env.RATE_LIMIT_LIMIT ?? '5');
 
 async function incr(key: string): Promise<number> {
   if (!URL || !TOKEN) {

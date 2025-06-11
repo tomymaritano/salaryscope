@@ -101,6 +101,15 @@ DATABASE_URL=postgresql://usuario:password@localhost:5432/salaryscope
 
 Ajusta los valores según tu configuración local o remota.
 
+Para habilitar el limitador de tasa opcional define también:
+
+```
+UPSTASH_REDIS_REST_URL=https://<id>.upstash.io
+UPSTASH_REDIS_REST_TOKEN=<token>
+RATE_LIMIT_WINDOW=60
+RATE_LIMIT_LIMIT=5
+```
+
 ## 🧪 Ejecutar pruebas
 
 La aplicación incluye pruebas unitarias para servicios y algunos componentes. Ejecuta `npm test` junto con `npm run lint` antes de enviar un PR. Recuerda generar los clientes de Prisma con `npx prisma generate`.
